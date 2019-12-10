@@ -1,2 +1,4 @@
+osp_templates_copy_only: false
+osp_templates_quick_mode: false
 osp_templates_become: true
 osp_templates_become_user: root

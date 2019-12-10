@@ -1,1 +1,2 @@
-# Vars for osp_templates
+osp_templates_variable_start_string: "{% raw %}{{{% endraw %}"
+osp_templates_variable_end_string: "{% raw %}}}{% endraw %}"

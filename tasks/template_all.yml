@@ -1,0 +1,13 @@
+- name: generate all templates from {{ osp_templates_input_dir }}
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ osp_templates_output_dir }}/{{ item.path }}"
+    mode: "{{ item.mode }}"
+    variable_start_string: "{{ osp_templates_variable_start_string }}"
+    variable_end_string: "{{ osp_templates_variable_end_string }}"
+    owner: "{{ osp_templates_owner | omit }}"
+  with_filetree: "{{ osp_templates_input_dir }}"
+  when: item.state == 'file'
+  register: _template_output
+  changed_when:
+    - _template_output | changed

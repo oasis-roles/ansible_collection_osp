@@ -1,0 +1,16 @@
+- name: >-
+    copy all files from {{ osp_templates_input_dir }} to
+    {{ osp_templates_output_dir }}
+  synchronize:
+    src: "{{ osp_templates_intput_dir }}"
+    dest: "{{ osp_templates_output_dir }}"
+    checksum: true
+    archive: false
+    recursive: true
+  register: _sync_output
+
+- debug:
+    var: _sync_output
+  changed_when: _sync_output | changed
+  when:
+    - _sync_output | changed
