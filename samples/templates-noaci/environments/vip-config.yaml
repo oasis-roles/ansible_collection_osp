@@ -1,0 +1,7 @@
+parameter_defaults:
+  # CloudName:
+  ControlFixedIPs: [{'ip_address':'{{ undercloud.ctlplane.vip }}'}]
+  InternalApiVirtualFixedIPs: [{'ip_address':'{{ overcloud.networks.InternalApi.vip }}'}]
+  PublicVirtualFixedIPs: [{'ip_address':'{{ overcloud.networks.External.vip }}'}]
+  StorageVirtualFixedIPs: [{'ip_address':'{{ overcloud.networks.Storage.vip }}'}]
+  RedisVirtualFixedIPs: [{'ip_address':'{{ overcloud.RedisVirtualFixedIP }}'}]

@@ -1,0 +1,19 @@
+parameter_defaults:
+  ExtraConfig:
+
+# Storage Configs
+    tripleo::instanceha::no_shared_storage: true
+    nova::block_device_allocate_retries: 300
+    nova::block_device_allocate_retries_interval: 6
+    nova::block_device_creation_timeout: 600
+
+
+# Firewall Configs
+    tripleo::firewall::firewall_rules:
+      '996 snmp allow':
+        proto: udp
+        port: 161
+        action: accept
+      '997 bypass log':
+        proto: all
+        action: drop

@@ -1,0 +1,35 @@
+heat_template_version: 2014-10-16
+
+description: >
+  Install ScaleIO SDC on all nodes
+
+parameters:
+  servers:
+    type: json
+  ScaleIOMDMAddresses:
+    type: string
+    default: '192.168.4.200'
+
+resources:
+  InstallSDCConfigPost:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config:
+        str_replace:
+          template: { get_file: ./scripts/install-scaleio-packages.sh }
+          params:
+            DIRECTOR_REPOS: {get_file: ../resources/director.repo}
+            SCALEIOMDMIPS: { get_param: ScaleIOMDMAddresses }
+
+  InstallSDCDeploymentPost:
+    type: OS::Heat::SoftwareDeploymentGroup
+    properties:
+      config: {get_resource: InstallSDCConfigPost}
+      servers: {get_param: servers}
+      actions: ['CREATE']
+
+outputs:
+  deploy_stdout:
+    description: Deployment reference, used to trigger pre-deploy on changes
+    value: {get_attr: [InstallSDCDeploymentPost, deploy_stdout]}

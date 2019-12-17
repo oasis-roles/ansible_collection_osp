@@ -1,0 +1,2 @@
+resource_registry:
+  OS::TripleO::NodeUserData: /home/stack/ansible-generated/templates-noaci/heat/firstboot-config.yaml

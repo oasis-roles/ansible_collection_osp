@@ -1,0 +1,34 @@
+heat_template_version: 2014-10-16
+
+description: >
+  Extraconfig resolv.conf search domain
+parameters:
+  servers:
+    type: json
+  DeployIdentifier:
+    type: string
+  ResolvSearchDomain:
+    default: 'localdomain'
+    type: string
+
+resources:
+  ExtraConfig:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config:
+        str_replace:
+          template: |
+            #!/bin/sh
+            sed -i "s/^search.*/search _SEARCH_DOMAIN_/g" /etc/resolv.conf
+          params:
+            _SEARCH_DOMAIN_: {get_param: ResolvSearchDomain}
+
+  ExtraDeployments:
+    type: OS::Heat::SoftwareDeployments
+    properties:
+      config: {get_resource: ExtraConfig}
+      servers:  {get_param: servers}
+      actions: ['CREATE','UPDATE']
+      input_values:
+        deploy_identifier: {get_param: DeployIdentifier}
