@@ -11,6 +11,6 @@
 
 - debug:
     var: _sync_output
-  changed_when: _sync_output | changed
+  changed_when: _sync_output is changed
   when:
-    - _sync_output | changed
+    - _sync_output is changed

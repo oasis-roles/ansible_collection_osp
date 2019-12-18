@@ -3,13 +3,13 @@
       file:
         path: "{{ osp_templates_output_dir }}"
         state: directory
-        owner: "{{ osp_templates_owner | omit }}"
+        owner: "{{ osp_templates_owner | default(omit) }}"
 
     - name: match {{ osp_templates_input_dir }} folder structure to output
       file:
         path: "{{ osp_templates_output_dir }}"
         state: directory
-        owner: "{{ osp_templates_owner | omit }}"
+        owner: "{{ osp_templates_owner | default(omit) }}"
       with_filetree: "{{ osp_templates_input_dir }}"
       when:
         - item.state == 'directory'

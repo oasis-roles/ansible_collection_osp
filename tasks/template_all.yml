@@ -5,9 +5,9 @@
     mode: "{{ item.mode }}"
     variable_start_string: "{{ osp_templates_variable_start_string }}"
     variable_end_string: "{{ osp_templates_variable_end_string }}"
-    owner: "{{ osp_templates_owner | omit }}"
+    owner: "{{ osp_templates_owner | default(omit) }}"
   with_filetree: "{{ osp_templates_input_dir }}"
   when: item.state == 'file'
   register: _template_output
   changed_when:
-    - _template_output | changed
+    - _template_output is changed
