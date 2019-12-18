@@ -5,6 +5,6 @@
     base: "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}/../shared/"
   roles:
     - role: osp_templates
-      osp_templates_input_dir: "{{ base }}/in"
+      osp_templates_input_dir: "{{ base }}/in/"
       osp_templates_output_dir: /out
       value: "my string"
