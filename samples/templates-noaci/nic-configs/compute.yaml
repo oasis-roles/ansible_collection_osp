@@ -68,16 +68,16 @@ parameters:
     description: The subnet CIDR of the control plane network.
     type: string
   ControlPlaneDefaultRoute: # Override this via parameter_defaults
-    default: {{ overcloud.networks.Control.gateway }}
+    default: {{ overcloud.networks.Control.gateway_ip }}
     description: The default route of the control plane network.
     type: string
   ManagementInterfaceDefaultRoute: # Override this via parameter_defaults
-    default: {{ overcloud.networks.Management.gateway }}
+    default: {{ overcloud.networks.Management.gateway_ip }}
     description: The default route of the external network.
     type: string
   DnsServers: # Override this vi a parameter_defaults
     default:
-{% for dns_server in overcloud.networks.dns_servers %}
+{% for dns_server in overcloud.dns_servers %}
     - {{ dns_server }}
 {% endfor %}
     description: A list of DNS servers (2 max for some implementations) that will be added to resolv.conf.
