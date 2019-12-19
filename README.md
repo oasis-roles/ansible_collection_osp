@@ -8,6 +8,30 @@ in different modes to template either the entire structure or to leverage git to
 template files which have changed. Rsync is used to drop the final files into place
 once the temlpating step is complete
 
+The role can operate in one of three modes. It has a "template all" mode, where
+it walks the `osp_templates_input_dir` and processes each file through the Jinja2 filter
+system and duplicates it into the `osp_templates_output_dir` structure. It can also
+operate in a "quick" mode where it will do the same, but it will only operate on files
+that are reported as changed by a git status. This will require that "git" be installed
+on the Ansible operator node. The third mode is "copy only" mode, where rsync is used
+to synchronize files from input to output directories. This requires rsync be installed
+and that any hosts be accessible (without password arguments). For requirements on the
+synchronize, check the [synchronize module](https://docs.ansible.com/ansible/latest/modules/synchronize_module.html#synchronize-module)
+in Ansible.
+
+The default mode is "template all". To enable quick mode set `osp_templates_quick_mode`
+to true. This will avoid the extra time of evaluating every template. To enable copy
+mode, set `osp_templates_copy_only` to true. Only one mode at a time can be executed.
+See below for information on different ways to use the role multiple times if you need
+to run in multiple steps.
+
+There is a very extensive set of sample files in the `samples/` directory that should
+be useful in deploying a [Red Hat OpenStack Platform](https://www.redhat.com/en/technologies/linux-platforms/openstack-platform)
+instance with Director. These files are not necessarily going to be perfectly suited to
+every environment or system. Feel free to grab those files, update them as appropriate,
+and specify your own directory as the `osp_templates_input_dir` variable. Also, there is
+nothing in this role, besides the samples, that is specifically tied to OpenStack.
+
 Requirements
 ------------
 
@@ -28,7 +52,9 @@ Currently the following variables are supported:
   are going to be generated.
 * `osp_templates_input_dir` - Default: `sample/templates`. The sample folder in
   this role contains a default set of templates for configuring an OpenStack
-  Director node.
+  Director node. **copy_only** When executing in copy_only mode, this serves as the
+  `src` paramter to the `synchronize` module. Thus, the presence or absence of a
+  "/" at the end of the string is a significant detail in that mode, only
 * `osp_templates_quick_mode` - Default: false. Use git in the input directory and
   only template files which are reported as changed in the git tree.
 * `osp_templates_copy_only` - Default: false. Use rsync to copy files from the
@@ -196,10 +222,48 @@ None
 Example Playbook
 ----------------
 
+A very minimal call that will execute in template-all mode using the built-in `samples/`
+directory (this assumes that variables specific to the templates are defined elsewhere,
+such as in group\_vars)
 ```yaml
-- hosts: osp_templates-servers
+- hosts: localhost
   roles:
     - role: oasis_roles.osp_templates
+      osp_templates_output_dir: /some/output/string
+```
+
+To run the role in quick mode with a custom set of templates, ensure that the source files
+are located within a git repository and run the following playbook:
+```yaml
+- hosts: some_hosts
+  roles:
+    - role: oasis_roles.osp_templates
+      osp_templates_quick_mode: true
+      osp_templates_input_dir: "{{ playbook_dir }}/my_site"
+      osp_templates_output_dir: "{{ ansible_user_dir }}/public_html"
+```
+
+To generate templates locally, then syncrhonize them to a remote host, do:
+```yaml
+- hosts: localhost
+  roles:
+    - role: oasis_roles.osp_templates
+      osp_templates_input_dir: "/home/user/website_templates"
+      osp_templates_output_dir: "/home/user/website"
+  post_tasks:
+    - name: make sure rsync installed locally
+      become: true
+      package:
+        name: rsync
+        state: present
+
+
+- hosts: webserver
+  roles:
+    - role: oasis_roles.osp_templates
+      osp_template_intput_dir: /home/user/website  # no trailing '/' means the file goes, too
+      osp_template_output_dir: /var/www  # will result in /var/www/website on remote
+      osp_template_copy_only: true
 ```
 
 License
@@ -210,4 +274,5 @@ GPLv3
 Author Information
 ------------------
 
-Author Name <authoremail@domain.net>
+Greg Hellings <greg.hellings@gmail.com>
+Homero Pawlowski <homeski2@gmail.com>
