@@ -35,7 +35,6 @@
         dest: "{{ base }}/in/b.in"
 
 
-
 - hosts: all
   gather_facts: false
   vars:
@@ -46,4 +45,3 @@
       osp_templates_output_dir: "/out"
       osp_templates_quick_mode: true
       value: my value
-
