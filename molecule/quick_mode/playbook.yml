@@ -1,0 +1,49 @@
+# Create a temporoary git repository in the molecule ephemeral
+# directory so that we can verify only the files listed as "changed"
+# are being moved over to the new location
+- hosts: localhost
+  gather_facts: false
+  vars:
+    base: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}"
+  tasks:
+    - name: create git repo
+      command: git init "{{ base }}/in"
+      args:
+        creates: "{{ base }}/in"
+
+    - name: create file a.in
+      copy:
+        content: "file_a: value"
+        dest: "{{ base }}/in/a.in"
+      register: _create_a_in
+
+    - name: stage file
+      command: git stage "{{ base }}/in/a.in"
+      args:
+        chdir: "{{ base }}/in"
+      when: _create_a_in is changed
+
+    - name: commit file
+      command: git ci -m "add a.in"
+      args:
+        chdir: "{{ base }}/in"
+      when: _create_a_in is changed
+
+    - name: create b.in
+      copy:
+        content: "{% raw %}file_b: {{ value }}{% endraw %}"
+        dest: "{{ base }}/in/b.in"
+
+
+
+- hosts: all
+  gather_facts: false
+  vars:
+    base: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}"
+  roles:
+    - role: osp_templates
+      osp_templates_input_dir: "{{ base }}/in"
+      osp_templates_output_dir: "/out"
+      osp_templates_quick_mode: true
+      value: my value
+

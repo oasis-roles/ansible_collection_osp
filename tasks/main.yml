@@ -7,7 +7,7 @@
 
     - name: match {{ osp_templates_input_dir }} folder structure to output
       file:
-        path: "{{ osp_templates_output_dir }}"
+        path: "{{ osp_templates_output_dir }}/{{ item.path }}"
         state: directory
         owner: "{{ osp_templates_owner | default(omit) }}"
       with_filetree: "{{ osp_templates_input_dir }}"

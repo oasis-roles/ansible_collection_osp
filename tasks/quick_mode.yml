@@ -1,10 +1,12 @@
 - name: list files described as changed by git
   shell: |
     set -o pipefail -e
-    cd {{ osp_templates_input_dir }}; git status -- short . | \
-    grep -v '^\\sD' | awk '{print $2}'
+    git status --short . | grep -v '^\\sD' | awk '{print $2}'
+  args:
+    chdir: "{{ osp_templates_input_dir }}"
   register: _shell_output
   changed_when: false
+  delegate_to: localhost
 
 - debug:
     var: _shell_output.stdout_lines
@@ -15,6 +17,6 @@
     dest: "{{ osp_templates_output_dir }}/{{ item }}"
     variable_start_string: "{{ osp_templates_variable_start_string }}"
     variable_end_string: "{{ osp_templates_variable_end_string }}"
-    owner: "{{ osp_templates_owner | omit }}"
+    owner: "{{ osp_templates_owner | default(omit) }}"
   loop: "{{ _shell_output.stdout_lines }}"
   register: _template_output

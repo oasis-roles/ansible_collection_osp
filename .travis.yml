@@ -20,6 +20,7 @@ install:
 env:
   - TEST=template_mode
   - TEST=copy_mode
+  - TEST=quick_mode
 
 script:
   # flake8 is not guaranteed to run on lint, do that before testing
