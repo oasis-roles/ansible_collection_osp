@@ -4,6 +4,7 @@
     git status --short . | grep -v '^\\sD' | awk '{print $2}'
   args:
     chdir: "{{ osp_templates_input_dir }}"
+    executable: /bin/bash
   register: _shell_output
   changed_when: false
   delegate_to: localhost
