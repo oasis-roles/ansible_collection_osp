@@ -24,7 +24,7 @@
       when: _create_a_in is changed
 
     - name: commit file
-      command: git ci -m "add a.in"
+      command: git commit -m "add a.in"
       args:
         chdir: "{{ base }}/in"
       when: _create_a_in is changed
