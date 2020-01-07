@@ -62,7 +62,7 @@ Currently the following variables are supported:
 * `osp_templates_owner` - The owner of the files and directories to be
   generated out of the templating process. By default, the behavior of the
   template/file modules will be maintained.
-* `osp_templates_become` - Default: true. If this role needs administrator
+* `osp_templates_become` - Default: false. If this role needs administrator
   privileges, then use the Ansible become functionality (based off sudo).
 * `osp_templates_become_user` - Default: root. If the role uses the become
   functionality for privilege escalation, then this is the name of the target
