@@ -217,7 +217,8 @@ CAMap:
 Dependencies
 ------------
 
-None
+If using the included samples/ directory, then you will need the "netaddr"
+package for Python.
 
 Example Playbook
 ----------------
