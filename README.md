@@ -6,7 +6,7 @@ osp_templates
 Ansible role to template an entire directory structure efficiently. It can be operated
 in different modes to template either the entire structure or to leverage git to only
 template files which have changed. Rsync is used to drop the final files into place
-once the temlpating step is complete
+once the templating step is complete
 
 The role can operate in one of three modes. It has a "template all" mode, where
 it walks the `osp_templates_input_dir` and processes each file through the Jinja2 filter
@@ -73,7 +73,7 @@ Currently the following variables are supported:
 The sample templates, which are appropriate for deploying a [Red Hat OpenStack
 Platform](https://www.redhat.com/en/technologies/linux-platforms/openstack-platform)
 instance with Director. To do so, it will depend on a few additional variables
-that are not directly require by the role itself.
+that are not directly required by the role itself.
 
 * `satellite_host` - Hostname or IP address for a satellite instance
 * `satellite_port` - Port that the Satellite instance runs on, defaults to 5000
@@ -243,7 +243,7 @@ are located within a git repository and run the following playbook:
       osp_templates_output_dir: "{{ ansible_user_dir }}/public_html"
 ```
 
-To generate templates locally, then syncrhonize them to a remote host, do:
+To generate templates locally, then synchronize them to a remote host, do:
 ```yaml
 - hosts: localhost
   roles:
