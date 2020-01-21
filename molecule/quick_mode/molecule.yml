@@ -23,11 +23,13 @@ provisioner:
     name: ansible-lint
   playbooks:
     prepare: ../shared/prepare.yml
-    converge: ../shared/playbook.yml
     cleanup: ../shared/cleanup.yml
   config_options:
     defaults:
       stdout_callback: yaml
+  inventory:
+    group_vars:
+      osp_templates_quick_mode: true
 verifier:
   name: testinfra
   options:

@@ -1,0 +1,4 @@
+parameter_defaults:
+  ControllerExtraConfig:
+    nova::network::neutron::dhcp_domain: '{{ overcloud.NeutronDhcpDomain }}'
+  NeutronDnsDomain: '{{ overcloud.NeutronDnsDomain }}'

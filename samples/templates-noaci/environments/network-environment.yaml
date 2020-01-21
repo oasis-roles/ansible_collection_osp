@@ -1,0 +1,81 @@
+#This file is an example of an environment file for defining the isolated
+#networks and related parameters.
+resource_registry:
+
+  #NOTE that for the time being we will use this management network for VLAN 570
+  #Each Node that needs and interface on VLAN 570 for the EMC stuff will get an interface
+  #on this network. Disregard the name as it is just for Variable definition
+  #OS::TripleO::Network::Management: /usr/share/openstack-tripleo-heat-templates/network/management.yaml
+
+  # Port assignments for the controller role
+  #OS::TripleO::Controller::Ports::ManagementPort: /usr/share/openstack-tripleo-heat-templates/network/ports/management.yaml
+  # Port assignments for the compute role
+  #OS::TripleO::Compute::Ports::ManagementPort: /usr/share/openstack-tripleo-heat-templates/network/ports/management.yaml
+  # Port assignments for the ceph storage role
+  #OS::TripleO::CephStorage::Ports::ManagementPort: /usr/share/openstack-tripleo-heat-templates/network/ports/management.yaml
+  # Port assignments for the swift storage role
+  #OS::TripleO::SwiftStorage::Ports::ManagementPort: /usr/share/openstack-tripleo-heat-templates/network/ports/management.yaml
+  # Port assignments for the block storage role
+  #OS::TripleO::BlockStorage::Ports::ManagementPort: /usr/share/openstack-tripleo-heat-templates/network/ports/management.yaml
+
+  # Network Interface templates to use (these files must exist)
+  OS::TripleO::Compute::Net::SoftwareConfig:
+    /home/stack/ansible-generated/templates-noaci/nic-configs/compute.yaml
+  OS::TripleO::Controller::Net::SoftwareConfig:
+    /home/stack/ansible-generated/templates-noaci/nic-configs/controller.yaml
+
+  # Disable storage management
+  OS::TripleO::Network::Ports::StorageMgmtVipPort: /usr/share/openstack-tripleo-heat-templates/network/ports/noop.yaml
+  OS::TripleO::Controller::Ports::StorageMgmtVipPort: /usr/share/openstack-tripleo-heat-templates/network/ports/noop.yaml
+  OS::TripleO::Controller::Ports::StorageMgmtPort: /usr/share/openstack-tripleo-heat-templates/network/ports/noop.yaml
+
+  OS::TripleO::Compute::Ports::ExternalPort: /usr/share/openstack-tripleo-heat-templates/network/ports/external.yaml
+
+parameter_defaults:
+  # This section is where deployment-specific configuration is done
+  # CIDR subnet mask length for provisioning network
+  ControlPlaneSubnetCidr: "{{ undercloud.ctlplane.subnet | ipaddr('prefix') }}"
+  # Gateway router for the provisioning network (or Undercloud IP)
+  ControlPlaneDefaultRoute: "{{ overcloud.ControlPlaneDefaultRoute }}"
+  EC2MetadataIp: "{{ undercloud.cidr | ipaddr('address') }}"  # Generally the IP of the Undercloud
+  # Customize the IP subnets to match the local environment
+  InternalApiNetCidr: "{{ overcloud.networks.InternalApi.ip_subnet }}"
+  StorageNetCidr: "{{ overcloud.networks.Storage.ip_subnet }}"
+  StorageMgmtNetCidr: "{{ overcloud.networks.StorageMgmt.ip_subnet }}"
+  TenantNetCidr: "{{ overcloud.networks.Tenant.ip_subnet }}"
+  ExternalNetCidr: "{{ overcloud.networks.External.ip_subnet }}"
+  # Customize the VLAN IDs to match the local environment
+  InternalApiNetworkVlanID: "{{ overcloud.networks.InternalApi.vlan }}"
+  StorageNetworkVlanID: "{{ overcloud.networks.Storage.vlan }}"
+  StorageMgmtNetworkVlanID: "{{ overcloud.networks.StorageMgmt.vlan }}"
+  TenantNetworkVlanID: "{{ overcloud.networks.Tenant.vlan }}"
+  ExternalNetworkVlanID: "{{ overcloud.networks.External.vlan }}"
+  # Customize the IP ranges on each network to use for static IPs and VIPs
+  InternalApiAllocationPools: [{'start': '{{ overcloud.networks.InternalApi.allocation_pools.start }}', 'end': '{{ overcloud.networks.InternalApi.allocation_pools.end }}'}]
+  StorageAllocationPools: [{'start': '{{ overcloud.networks.Storage.allocation_pools.start }}', 'end': '{{ overcloud.networks.Storage.allocation_pools.end }}'}]
+  StorageMgmtAllocationPools: [{'start': '{{ overcloud.networks.StorageMgmt.allocation_pools.start }}', 'end': '{{ overcloud.networks.StorageMgmt.allocation_pools.end }}'}]
+  TenantAllocationPools: [{'start': '{{ overcloud.networks.Tenant.allocation_pools.start }}', 'end': '{{ overcloud.networks.Tenant.allocation_pools.end }}'}]
+  # Leave room if the external network is also used for floating IPs
+  ExternalAllocationPools: [{'start': '{{ overcloud.networks.External.allocation_pools.start }}','end': '{{ overcloud.networks.External.allocation_pools.end }}'}]
+  # Gateway router for the external network
+  ExternalInterfaceDefaultRoute: "{{ overcloud.networks.External.gateway_ip }}"
+  # Uncomment if using the Management Network (see network-management.yaml)
+  # Using this for EMC Network (VLAN 570)
+{% if "Management" in overcloud.networks %}
+  ManagementNetworkVlanID: "{{ overcloud.networks.Management.vlan }}"
+  ManagementNetCidr: "{{ overcloud.networks.Management.ip_subnet }}"
+  ManagementAllocationPools: [{'start': '{{ overcloud.networks.Management.allocation_pools.start }}', 'end': '{{ overcloud.networks.Management.allocation_pools.end }}'}]
+  ManagementInterfaceDefaultRoute: "{{ overcloud.networks.Management.gateway_ip }}"
+{% endif %}
+  # Use either this parameter or ControlPlaneDefaultRoute in the NIC templates
+  # Define the DNS servers (maximum 2) for the overcloud nodes
+  DnsServers: {{ overcloud.dns_servers | to_yaml | trim }}
+  # Set to empty string to enable multiple external networks or VLANs
+  NeutronExternalNetworkBridge: "''"
+  # The tunnel type for the tenant network (vxlan or gre). Set to '' to disable tunneling.
+  NeutronTunnelTypes: "vxlan"
+  # Customize bonding options, e.g. "mode=4 lacp_rate=1 updelay=1000 miimon=100"
+  BondInterfaceOvsOptions: "mode=4 lacp_rate=1 updelay=1000 miimon=100"
+  NeutronEnableIsolatedMetadata: true
+  CloudDomain: "{{ overcloud.domain_name }}"
+  CloudName: "{{ overcloud.cloudname }}"

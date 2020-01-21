@@ -1,0 +1,10 @@
+parameter_defaults:
+  ControllerCount: '{{ overcloud.ControllerCount }}'
+  ComputeCount: '{{ overcloud.ComputeCount }}'
+  CephStorageCount: '{{ overcloud.CephStorageCount }}'
+  OvercloudControlFlavor: control
+  OvercloudComputeFlavor: compute
+  ComputeHostnameFormat: '{{ overcloud.ComputeHostnameFormat }}'
+  ControllerHostnameFormat: '{{ overcloud.ControllerHostnameFormat }}'
+  TimeZone: 'America/New_York'
+  NtpServer:  {{ overcloud.NtpServer | to_yaml | trim }}

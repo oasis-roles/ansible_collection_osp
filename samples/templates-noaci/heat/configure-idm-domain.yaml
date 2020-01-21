@@ -1,0 +1,71 @@
+heat_template_version: 2016-10-14
+
+description: >
+  Install LDAP configuration on controllers
+
+parameters:
+  servers:
+    type: json
+  IDMKeystoneDomain:
+    type: string
+    default: "idm"
+  IDMUserFilter:
+    type: string
+    default: ""
+  IDMGroupFilter:
+    type: string
+    default: ""
+  IDMCaCertificate:
+    type: string
+    default: ""
+  IDMBindDN:
+    type: string
+    default: ""
+  IDMBindPassword:
+    type: string
+    default: ""
+    hidden: true
+  IDMUserTree:
+    type: string
+    default: ""
+  IDMGroupTree:
+    type: string
+    default: ""
+  IDMServers:
+    type: string
+    default: ""
+
+resources:
+  IDMDomainConfigPost:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config:
+        str_replace:
+          template: { get_file: ldap-config.sh }
+          params:
+            IDMSERVERS: { get_param: IDMServers }
+            IDMDOMAINNAME: { get_param: IDMKeystoneDomain }
+            IDMBINDUSER: { get_param: IDMBindDN }
+            IDMBINDPASSWORD: { get_param: IDMBindPassword }
+            IDMUSERTREE: { get_param: IDMUserTree }
+            IDMUSERFILTER: { get_param: IDMUserFilter }
+            IDMGROUPFILTER: { get_param: IDMGroupFilter }
+            IDMGROUPTREE: { get_param: IDMGroupTree }
+            IDMCACERT: { get_param: IDMCaCertificate }
+
+
+  IDMDomainDeploymentPost:
+    type: OS::Heat::SoftwareDeploymentGroup
+    properties:
+      config: {get_resource: IDMDomainConfigPost}
+      servers: {get_param: servers}
+      actions: ['CREATE', 'UPDATE']
+
+outputs:
+  deploy_stdout:
+    description: Deployment reference, used to trigger pre-deploy on changes
+    value: {get_attr: [IDMDomainDeploymentPost, deploy_stdout]}
+  deploy_stderr:
+    description: Deployment reference, used to trigger pre-deploy on changes
+    value: {get_attr: [IDMDomainDeploymentPost, deploy_stderr]}

@@ -1,0 +1,8 @@
+resource_registry:
+  OS::TripleO::NodeExtraConfigPost: ../heat/post-config-wrapper.yaml
+
+parameter_defaults:
+  ScaleIOMDMAddresses: '{{ overcloud.scaleio.MDMAddresses }}'
+  CinderEnableIscsiBackend: false
+  NovaComputeOptVolumes: ['/opt/emc/scaleio:/opt/emc/scaleio', '/bin/emc/scaleio:/bin/emc/scaleio']
+  CinderVolumeOptVolumes: ['/opt/emc/scaleio:/opt/emc/scaleio', '/bin/emc/scaleio:/bin/emc/scaleio', '/lib64/libnuma.so.1:/lib64/libnuma.so.1']

@@ -1,0 +1,133 @@
+- hosts: all
+  gather_facts: false
+  vars:
+    satellite_host: example.com
+    satellite_port: 5123
+    overcloud_nodes:
+      - name: test1
+        role: control
+        mac: 1:2:3
+        pm:
+          addr: test1.power.example.com
+          type: ipmi
+          password: ipmipassword
+          user: root
+      - name: test2
+        role: compute
+        arch: aarch64
+        mac: 1:2:4
+        pm:
+          addr: test2.power.example.com
+          type: ipmi
+          password: ipmipassword
+          user: root
+    named_env: test_cloud
+    overcloud:
+      cloudname: MyAwesomeCloud
+      ControllerCount: 3
+      ComputeCount: 200
+      CephStorageCount: 20
+      ComputeHostnameFormat: '%s-some-%d-format'
+      ControllerHostnameFormat: '%s-some-controller-%d-format'
+      networks:
+        Control:
+          cidr: 23
+          gateway_ip: 10.100.0.1
+        External:
+          gateway_ip: 10.110.0.1
+          default_route: true
+          vip: 10.110.0.2
+          ip_subnet: 10.110.0.0
+          vlan: 110
+          allocation_pools:
+            start: 10.110.0.10
+            end: 10.110.0.200
+        InternalApi:
+          vip: myvip
+          ip_subnet: 10.120.0.0
+          vlan: 120
+          allocation_pools:
+            start: 10.120.0.10
+            end: 10.120.0.200
+        Management:
+          gateway_ip: 10.125.0.1
+          default_route: false
+          vlan: 125
+          ip_subnet: 10.125.0.0
+          allocation_pools:
+            start: 10.125.0.10
+            end: 10.125.0.200
+        StorageMgmt:
+          ip_subnet: 10.130.0.0
+          vlan: 130
+          allocation_pools:
+            start: 10.130.0.10
+            end: 10.130.0.200
+        Storage:
+          vip: 10.140.0.2
+          ip_subnet: 10.140.0.0
+          vlan: 140
+          allocation_pools:
+            start: 10.140.0.10
+            end: 10.140.0.200
+        Tenant:
+          ip_subnet: 10.150.0.0
+          vlan: 150
+          allocation_pools:
+            start: 10.150.0.10
+            end: 10.150.0.200
+      dns_servers:
+        - 10.0.0.1
+        - 8.8.4.4
+        - 8.8.8.8
+      NtpServer: ntp.example.com
+      root_password: s0m3pass
+      RedisVirtualFixedIP: 10.1.1.1
+      domain_name: example.com
+      ControlPlaneDefaultRoute: 192.168.1.1
+      NeutronDhcpDomain: neutron.example.com
+      NeutronDnsDomain: neutron.example.com
+      swift:
+        authurl: http://swift.example.com/
+        key: swift_url_key
+      scaleio:
+        protection_domain_name: scaleio.example.com
+        storage_pool: scale_name
+        san_ip: 10.199.1.1
+        san_password: san_P4Ss
+        MDMAddresses: mdm.scaleio.example.com
+    undercloud:
+      ctlplane:
+        vip: somevip
+        subnet: 10.200.0.0
+      cidr: 192.168.1.1/24
+    satellite:
+      overcloud:
+        ak: my_activation_key
+        org: My Org Name
+        hostname: hostname
+        tools_repo: repo_name
+        port: 5000
+    IDM:
+      domain: mydomain
+      servers: 192.168.1.10 192.168.1.11
+      bind_dn: some_user
+      bind_passwd: 's0m3_pass'
+      user_tree: "user tree DN"
+      user_filter: "some > user < filter = asdf"
+      group_tree: "group tree DN"
+      group_filter: "some > group % filter"
+      ca_cert: |-
+        ca cert for
+        the LDAP
+        server
+    certs:
+      CAMap:
+        - name: cert_name
+          content: |-
+            ======= CERT BEGIN ============
+            blah blah blah
+            ===============================
+  roles:
+    - role: osp_templates
+      osp_templates_output_dir: "/out"

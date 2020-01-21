@@ -3,24 +3,33 @@ dependency:
   options:
     role-file: molecule/shared/requirements.yml
 driver:
-  name: openstack
+  name: docker
 lint:
   name: yamllint
   options:
     config-file: tests/yamllint.yml
 platforms:
-  - name: test-osp_templates
+  - name: osp_templates
+    image: centos:7
+    ## Remove 'image' above and uncomment the following to run systemd in Docker
+    # image: centos/systemd
+    # privileged: true
+    # command: /usr/lib/systemd/systemd --system
+    # volumes:
+    #   - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
   playbooks:
     prepare: ../shared/prepare.yml
-    converge: ../shared/playbook.yml
     cleanup: ../shared/cleanup.yml
   config_options:
     defaults:
       stdout_callback: yaml
+  inventory:
+    group_vars:
+      osp_templates_quick_mode: true
 verifier:
   name: testinfra
   options:

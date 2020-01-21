@@ -1,0 +1,74 @@
+# Generated with the following on 2019-09-08T14:39:56.804749
+#
+#   openstack overcloud container image prepare --namespace={{ satellite_host }}:{{ satellite_port | default('5000') }} --prefix=dis-osp13_containers- --tag-from-label {version}-{release} --output-env-file=/home/stack/templates-noaci/environments/overcloud_images.yaml -r /home/stack/templates-noaci/roles_data.yaml -e /usr/share/openstack-tripleo-heat-templates/environments/network-isolation.yaml -e /usr/share/openstack-tripleo-heat-templates/extraconfig/pre_deploy/rhel-registration/environment-rhel-registration.yaml -e /home/stack/templates-noaci/environments/satellite-registration.yaml -e /usr/share/openstack-tripleo-heat-templates/environments/ssl/tls-endpoints-public-dns.yaml -e /home/stack/templates-noaci/environments/network-environment.yaml -e /home/stack/templates-noaci/environments/external-storage-environment.yaml -e /home/stack/templates-noaci/environments/misc-settings.yaml -e /home/stack/templates-noaci/environments/firstboot-environment.yaml -e /home/stack/templates-noaci/environments/vip-config.yaml -e /home/stack/templates-noaci/environments/idm-settings.yaml -e /home/stack/templates-noaci/environments/scaleio-sdc.yaml -e /home/stack/templates-noaci/environments/custom-glance-api.yaml -e /home/stack/templates-noaci/environments/enable-tls.yaml -e /home/stack/templates-noaci/environments/inject-trust-anchor-hiera.yaml -e /home/stack/templates-noaci/environments/set-domain-postconfig.yaml -e /home/stack/templates-noaci/environments/instance-domain.yaml -e /home/stack/templates-noaci/environments/compute-instance-ha-fence.yaml -e /usr/share/openstack-tripleo-heat-templates/environments/compute-instanceha.yaml -e /home/stack/templates-noaci/environments/overcloud_images.yaml
+#
+
+parameter_defaults:
+  DockerAodhApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-aodh-api:13.0-85
+  DockerAodhConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-aodh-api:13.0-85
+  DockerAodhEvaluatorImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-aodh-evaluator:13.0-85
+  DockerAodhListenerImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-aodh-listener:13.0-84
+  DockerAodhNotifierImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-aodh-notifier:13.0-85
+  DockerCeilometerCentralImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-ceilometer-central:13.0-82
+  DockerCeilometerComputeImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-ceilometer-compute:13.0-84
+  DockerCeilometerConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-ceilometer-central:13.0-82
+  DockerCeilometerNotificationImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-ceilometer-notification:13.0-84
+  DockerCinderApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-cinder-api:13.0-90
+  DockerCinderConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-cinder-api:13.0-90
+  DockerCinderSchedulerImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-cinder-scheduler:13.0-91
+  DockerCinderVolumeImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-cinder-volume:13.0-89
+  DockerClustercheckConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-mariadb:13.0-87
+  DockerClustercheckImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-mariadb:13.0-87
+  DockerCrondConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-cron:13.0-92
+  DockerCrondImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-cron:13.0-92
+  DockerGlanceApiConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-glance-api:13.0-87
+  DockerGlanceApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-glance-api:13.0-87
+  DockerGnocchiApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-gnocchi-api:13.0-85
+  DockerGnocchiConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-gnocchi-api:13.0-85
+  DockerGnocchiMetricdImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-gnocchi-metricd:13.0-86
+  DockerGnocchiStatsdImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-gnocchi-statsd:13.0-85
+  DockerHAProxyConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-haproxy:13.0-89
+  DockerHAProxyImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-haproxy:13.0-89
+  DockerHeatApiCfnConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-heat-api-cfn:13.0-83
+  DockerHeatApiCfnImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-heat-api-cfn:13.0-83
+  DockerHeatApiConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-heat-api:13.0-84
+  DockerHeatApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-heat-api:13.0-84
+  DockerHeatConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-heat-api:13.0-84
+  DockerHeatEngineImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-heat-engine:13.0-82
+  DockerHorizonConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-horizon:13.0-86
+  DockerHorizonImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-horizon:13.0-86
+  DockerInsecureRegistryAddress:
+  - {{ satellite_host }}:{{ satellite_port | default('5000') }}
+  DockerIscsidConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-iscsid:13.0-84
+  DockerIscsidImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-iscsid:13.0-84
+  DockerKeystoneConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-keystone:13.0-83
+  DockerKeystoneImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-keystone:13.0-83
+  DockerMemcachedConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-memcached:13.0-86
+  DockerMemcachedImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-memcached:13.0-86
+  DockerMysqlClientConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-mariadb:13.0-87
+  DockerMysqlConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-mariadb:13.0-87
+  DockerMysqlImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-mariadb:13.0-87
+  DockerNeutronApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-neutron-server:13.0-93
+  DockerNeutronConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-neutron-server:13.0-93
+  DockerNeutronDHCPImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-neutron-dhcp-agent:13.0-93
+  DockerNeutronL3AgentImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-neutron-l3-agent:13.0-92
+  DockerNeutronMetadataImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-neutron-metadata-agent:13.0-94
+  DockerNovaApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-api:13.0-92
+  DockerNovaComputeImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-compute:13.0-101
+  DockerNovaConductorImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-conductor:13.0-90
+  DockerNovaConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-api:13.0-92
+  DockerNovaConsoleauthImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-consoleauth:13.0-90
+  DockerNovaLibvirtConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-compute:13.0-101
+  DockerNovaLibvirtImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-libvirt:13.0-104
+  DockerNovaMetadataImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-api:13.0-92
+  DockerNovaPlacementConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-placement-api:13.0-91
+  DockerNovaPlacementImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-placement-api:13.0-91
+  DockerNovaSchedulerImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-scheduler:13.0-92
+  DockerNovaVncProxyImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-nova-novncproxy:13.0-93
+  DockerOpenvswitchImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-neutron-openvswitch-agent:13.0-92
+  DockerPankoApiImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-panko-api:13.0-85
+  DockerPankoConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-panko-api:13.0-85
+  DockerRabbitmqConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-rabbitmq:13.0-88
+  DockerRabbitmqImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-rabbitmq:13.0-88
+  DockerRedisConfigImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-redis:13.0-89
+  DockerRedisImage: {{ satellite_host }}:{{ satellite_port | default('5000') }}/dis-osp13_containers-redis:13.0-89

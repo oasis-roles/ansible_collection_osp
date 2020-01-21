@@ -1,0 +1,74 @@
+# Generated with the following on 2019-09-08T14:39:56.804749
+#
+#   openstack overcloud container image prepare --namespace={{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }} --prefix=dis-osp13_containers- --tag-from-label {version}-{release} --output-env-file=/home/stack/templates-noaci/environments/overcloud_images.yaml -r /home/stack/templates-noaci/roles_data.yaml -e /usr/share/openstack-tripleo-heat-templates/environments/network-isolation.yaml -e /usr/share/openstack-tripleo-heat-templates/extraconfig/pre_deploy/rhel-registration/environment-rhel-registration.yaml -e /home/stack/templates-noaci/environments/satellite-registration.yaml -e /usr/share/openstack-tripleo-heat-templates/environments/ssl/tls-endpoints-public-dns.yaml -e /home/stack/templates-noaci/environments/network-environment.yaml -e /home/stack/templates-noaci/environments/external-storage-environment.yaml -e /home/stack/templates-noaci/environments/misc-settings.yaml -e /home/stack/templates-noaci/environments/firstboot-environment.yaml -e /home/stack/templates-noaci/environments/vip-config.yaml -e /home/stack/templates-noaci/environments/idm-settings.yaml -e /home/stack/templates-noaci/environments/scaleio-sdc.yaml -e /home/stack/templates-noaci/environments/custom-glance-api.yaml -e /home/stack/templates-noaci/environments/enable-tls.yaml -e /home/stack/templates-noaci/environments/inject-trust-anchor-hiera.yaml -e /home/stack/templates-noaci/environments/set-domain-postconfig.yaml -e /home/stack/templates-noaci/environments/instance-domain.yaml -e /home/stack/templates-noaci/environments/compute-instance-ha-fence.yaml -e /usr/share/openstack-tripleo-heat-templates/environments/compute-instanceha.yaml -e /home/stack/templates-noaci/environments/overcloud_images.yaml
+#
+
+parameter_defaults:
+  DockerAodhApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-aodh-api:13.0-85
+  DockerAodhConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-aodh-api:13.0-85
+  DockerAodhEvaluatorImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-aodh-evaluator:13.0-85
+  DockerAodhListenerImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-aodh-listener:13.0-84
+  DockerAodhNotifierImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-aodh-notifier:13.0-85
+  DockerCeilometerCentralImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-ceilometer-central:13.0-82
+  DockerCeilometerComputeImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-ceilometer-compute:13.0-84
+  DockerCeilometerConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-ceilometer-central:13.0-82
+  DockerCeilometerNotificationImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-ceilometer-notification:13.0-84
+  DockerCinderApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-cinder-api:13.0-90
+  DockerCinderConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-cinder-api:13.0-90
+  DockerCinderSchedulerImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-cinder-scheduler:13.0-91
+  DockerCinderVolumeImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-cinder-volume:13.0-89
+  DockerClustercheckConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-mariadb:13.0-87
+  DockerClustercheckImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-mariadb:13.0-87
+  DockerCrondConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-cron:13.0-92
+  DockerCrondImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-cron:13.0-92
+  DockerGlanceApiConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-glance-api:13.0-87
+  DockerGlanceApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-glance-api:13.0-87
+  DockerGnocchiApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-gnocchi-api:13.0-85
+  DockerGnocchiConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-gnocchi-api:13.0-85
+  DockerGnocchiMetricdImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-gnocchi-metricd:13.0-86
+  DockerGnocchiStatsdImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-gnocchi-statsd:13.0-85
+  DockerHAProxyConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-haproxy:13.0-89
+  DockerHAProxyImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-haproxy:13.0-89
+  DockerHeatApiCfnConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-heat-api-cfn:13.0-83
+  DockerHeatApiCfnImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-heat-api-cfn:13.0-83
+  DockerHeatApiConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-heat-api:13.0-84
+  DockerHeatApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-heat-api:13.0-84
+  DockerHeatConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-heat-api:13.0-84
+  DockerHeatEngineImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-heat-engine:13.0-82
+  DockerHorizonConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-horizon:13.0-86
+  DockerHorizonImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-horizon:13.0-86
+  DockerInsecureRegistryAddress:
+  - {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}
+  DockerIscsidConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-iscsid:13.0-84
+  DockerIscsidImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-iscsid:13.0-84
+  DockerKeystoneConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-keystone:13.0-83
+  DockerKeystoneImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-keystone:13.0-83
+  DockerMemcachedConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-memcached:13.0-86
+  DockerMemcachedImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-memcached:13.0-86
+  DockerMysqlClientConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-mariadb:13.0-87
+  DockerMysqlConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-mariadb:13.0-87
+  DockerMysqlImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-mariadb:13.0-87
+  DockerNeutronApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-neutron-server:13.0-93
+  DockerNeutronConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-neutron-server:13.0-93
+  DockerNeutronDHCPImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-neutron-dhcp-agent:13.0-93
+  DockerNeutronL3AgentImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-neutron-l3-agent:13.0-92
+  DockerNeutronMetadataImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-neutron-metadata-agent:13.0-94
+  DockerNovaApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-api:13.0-92
+  DockerNovaComputeImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-compute:13.0-101
+  DockerNovaConductorImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-conductor:13.0-90
+  DockerNovaConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-api:13.0-92
+  DockerNovaConsoleauthImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-consoleauth:13.0-90
+  DockerNovaLibvirtConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-compute:13.0-101
+  DockerNovaLibvirtImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-libvirt:13.0-104
+  DockerNovaMetadataImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-api:13.0-92
+  DockerNovaPlacementConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-placement-api:13.0-91
+  DockerNovaPlacementImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-placement-api:13.0-91
+  DockerNovaSchedulerImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-scheduler:13.0-92
+  DockerNovaVncProxyImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-nova-novncproxy:13.0-93
+  DockerOpenvswitchImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-neutron-openvswitch-agent:13.0-92
+  DockerPankoApiImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-panko-api:13.0-85
+  DockerPankoConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-panko-api:13.0-85
+  DockerRabbitmqConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-rabbitmq:13.0-88
+  DockerRabbitmqImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-rabbitmq:13.0-88
+  DockerRedisConfigImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-redis:13.0-89
+  DockerRedisImage: {{ satellite.overcloud.hostname }}:{{ satellite.overcloud.port | default(5000) }}/dis-osp13_containers-redis:13.0-89

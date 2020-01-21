@@ -3,6 +3,14 @@
   roles:
     - role: oasis_roles.rhsm
       when: ansible_distribution == 'RedHat'
+  post_tasks:
+    - name: install necessary tools
+      package:
+        name:
+          - git
+          - rsync
+        state: present
+      become: true
   vars:
     rhsm_username: "{{ lookup('env', 'OASIS_RHSM_USERNAME') }}"
     rhsm_password: "{{ lookup('env', 'OASIS_RHSM_PASSWORD') }}"
