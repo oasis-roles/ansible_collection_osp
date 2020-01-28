@@ -1,1 +1,23 @@
-# Vars for osp_director
+osp_director_base_packages:
+  - python-tripleoclient
+  - crudini
+  - libguestfs-tools
+  - libguestfs-xfs
+
+osp_director_tempest_packages:
+  - openstack-tempest
+  - python2-cinder-tests-tempest
+  - python2-heat-tests-tempest
+  - python2-keystone-tests-tempest
+  - python2-networking-l2gw-tests-tempest
+  - python2-neutron-tests-tempest
+  - python2-novajoin-tests-tempest
+  - python2-octavia-tests-tempest
+
+osp_director_image_packages:
+  - rhosp-director-images
+  - rhosp-director-images-ipa
+
+osp_director_image_archives:
+  - /usr/share/rhosp-director-images/overcloud-full-latest-13.0.tar
+  - /usr/share/rhosp-director-images/ironic-python-agent-latest-13.0.tar

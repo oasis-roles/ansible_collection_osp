@@ -10,6 +10,7 @@ lint:
     config-file: tests/yamllint.yml
 platforms:
   - name: test-osp_director
+    flavor: ci.m1.xlarge
 provisioner:
   name: ansible
   lint:
@@ -21,6 +22,145 @@ provisioner:
   config_options:
     defaults:
       stdout_callback: yaml
+  inventory:
+    host_vars:
+      test-osp_director:
+        # Shamelessly yoinked from the oasis-roles/osp_templates/molecule/
+        # sample_dir/playbook.yml file to get this going
+        satellite_host: example.com
+        satellite_port: 5123
+        overcloud_nodes:
+          - name: test1
+            role: control
+            mac: 1:2:3
+            pm:
+              addr: test1.power.example.com
+              type: ipmi
+              password: ipmipassword
+              user: root
+          - name: test2
+            role: compute
+            arch: aarch64
+            mac: 1:2:4
+            pm:
+              addr: test2.power.example.com
+              type: ipmi
+              password: ipmipassword
+              user: root
+        named_env: test_cloud
+        overcloud:
+          cloudname: MyAwesomeCloud
+          ControllerCount: 3
+          ComputeCount: 200
+          CephStorageCount: 20
+          ComputeHostnameFormat: '%s-some-%d-format'
+          ControllerHostnameFormat: '%s-some-controller-%d-format'
+          networks:
+            Control:
+              allocation_pools:
+                - "{{ ansible_default_ipv4.address | ipmath(1) }}"
+                - "{{ ansible_default_ipv4.address | ipmath(10) }}"
+              cidr: |-
+                {{ ( ansible_default_ipv4.address + '/' +
+                ansible_default_ipv4.netmask ) | ipaddr("prefix") }}
+              gateway_ip: "{{ ansible_default_ipv4.gateway }}"
+              ip_subnet: "{{ ansible_default_ipv4.network }}"
+              vip: "{{ ansible_default_ipv4.address }}"
+            External:
+              allocation_pools:
+                start: 10.110.0.10
+                end: 10.110.0.200
+              default_route: true
+              gateway_ip: 10.110.0.1
+              ip_subnet: 10.110.0.0
+              vip: 10.110.0.2
+              vlan: 110
+            InternalApi:
+              allocation_pools:
+                start: 10.120.0.10
+                end: 10.120.0.200
+              ip_subnet: 10.120.0.0
+              vip: myvip
+              vlan: 120
+            Management:
+              allocation_pools:
+                start: 10.125.0.10
+                end: 10.125.0.200
+              default_route: false
+              gateway_ip: 10.125.0.1
+              ip_subnet: 10.125.0.0
+              vlan: 125
+            StorageMgmt:
+              allocation_pools:
+                start: 10.130.0.10
+                end: 10.130.0.200
+              ip_subnet: 10.130.0.0
+              vlan: 130
+            Storage:
+              allocation_pools:
+                start: 10.140.0.10
+                end: 10.140.0.200
+              ip_subnet: 10.140.0.0
+              vip: 10.140.0.2
+              vlan: 140
+            Tenant:
+              allocation_pools:
+                start: 10.150.0.10
+                end: 10.150.0.200
+              ip_subnet: 10.150.0.0
+              vlan: 150
+          dns_servers:
+            - 10.0.0.1
+            - 8.8.4.4
+            - 8.8.8.8
+          NtpServer: ntp.example.com
+          root_password: s0m3pass
+          RedisVirtualFixedIP: 10.1.1.1
+          domain_name: example.com
+          ControlPlaneDefaultRoute: 192.168.1.1
+          NeutronDhcpDomain: neutron.example.com
+          NeutronDnsDomain: neutron.example.com
+          swift:
+            authurl: http://swift.example.com/
+            key: swift_url_key
+          scaleio:
+            protection_domain_name: scaleio.example.com
+            storage_pool: scale_name
+            san_ip: 10.199.1.1
+            san_password: san_P4Ss
+            MDMAddresses: mdm.scaleio.example.com
+        undercloud:
+          ctlplane:
+            vip: somevip
+            subnet: 10.200.0.0
+          cidr: 192.168.1.1/24
+        satellite:
+          overcloud:
+            ak: my_activation_key
+            org: My Org Name
+            hostname: hostname
+            tools_repo: repo_name
+            port: 5000
+        IDM:
+          domain: mydomain
+          servers: 192.168.1.10 192.168.1.11
+          bind_dn: some_user
+          bind_passwd: 's0m3_pass'
+          user_tree: "user tree DN"
+          user_filter: "some > user < filter = asdf"
+          group_tree: "group tree DN"
+          group_filter: "some > group % filter"
+          ca_cert: |-
+            ca cert for
+            the LDAP
+            server
+        certs:
+          CAMap:
+            - name: cert_name
+              content: |-
+                ======= CERT BEGIN ============
+                blah blah blah
+                ===============================
 verifier:
   name: testinfra
   options:

@@ -1,2 +1,16 @@
 osp_director_become: true
 osp_director_become_user: root
+
+osp_director_named_env: example-dev
+osp_director_undercloud:
+  stack_user_password: password
+  hostname: director.example.com
+  cidr: 192.168.10.10/24
+  install_ceph_ansible: false
+
+osp_director_overcloud:
+  domain: example.com
+  ceph: "no"
+  overcloud_full_root_password: secret123
+
+#osp_director_templates
