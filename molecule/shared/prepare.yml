@@ -36,15 +36,20 @@
         content: |
           [DEFAULT]
           undercloud_hostname = director.example.com
-          local_ip = {{ ansible_default_ipv4.address }}/{{ overcloud.networks.Control.cidr }}
+          local_ip = {{ ansible_default_ipv4.address }}/{{
+            overcloud.networks.Control.cidr }}
           network_gateway = {{ overcloud.networks.Control.gateway_ip }}
           undercloud_nameservers = {{ overcloud.dns_servers | join(",") }}
           undercloud_ntp_servers = {{ overcloud.NtpServer }}
           local_interface = {{ ansible_default_ipv4.interface }}
-          network_cidr = {{ overcloud.networks.Control.ip_subnet }}/{{ overcloud.networks.Control.cidr }}
-          masquerade_network = {{ overcloud.networks.Control.ip_subnet }}/{{ overcloud.networks.Control.cidr }}
+          network_cidr = {{ overcloud.networks.Control.ip_subnet }}/{{
+            overcloud.networks.Control.cidr }}
+          masquerade_network = {{ overcloud.networks.Control.ip_subnet }}/{{
+            overcloud.networks.Control.cidr }}
           dhcp_start = {{ overcloud.networks.Control.allocation_pools[0] }}
           dhcp_end = {{ overcloud.networks.Control.allocation_pools[1] }}
           # yamllint disable-line rule:line-length
-          inspection_iprange = {{ overcloud.networks.Control.allocation_pools[1] | ipmath(1) }},{{ overcloud.networks.Control.allocation_pools[1] | ipmath(10) }}
+          inspection_iprange = {{ overcloud.networks.Control.allocation_pools[1]
+            | ipmath(1) }},{{ overcloud.networks.Control.allocation_pools[1] |
+            ipmath(10) }}
         owner: stack
