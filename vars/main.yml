@@ -21,3 +21,11 @@ osp_director_image_packages:
 osp_director_image_archives:
   - /usr/share/rhosp-director-images/overcloud-full-latest-13.0.tar
   - /usr/share/rhosp-director-images/ironic-python-agent-latest-13.0.tar
+
+osp_director_env_filters:
+  - OS_.*
+  - NOVA_.*
+  - IRONIC_.*
+  - PYTHONWARNINGS
+  - COMPUT_.*
+  - WEBSOCKET_CLIENT_CA_BUNDLE

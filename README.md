@@ -38,6 +38,34 @@ Currently the following variables are supported:
 
 ### General
 
+* `osp_director_named_env` - Name of the stack environment to create. Defaults
+  to "example-dev".
+* `osp_director_undercloud` - A dictionary of a few values needed in this role
+  to configure things outside of the templates. Takes the structure:
+```yaml
+osp_director_undercloud:
+  stack_user_password: password
+  hostname: director.example.com
+  cidr: 192.168.10.10/24
+  install_ceph_ansible: false
+  nameservers:
+    - 8.8.8.8
+    - 8.8.4.4
+```
+* `osp_director_overcloud` - A dictionary with a few values needed outside
+  of the templates to run Director. Takes the strcuture:
+```yaml
+osp_director_overcloud:
+  domain: example.com
+  ceph: "no"
+  overcloud_full_image_root_password: secret123
+```
+* `osp_director_templates` - Path to the templates that are needed to run
+  Director. These are highly dependent on your environment and desired config
+  for OpenStack. See the [osp\_templates](https://github.com/oasis-roles/osp_templates)
+  role's `sample` directory for one such example. However, that example should
+  not be taken as anything close to representative of the breadth of options
+  or complexity.
 * `osp_director_become` - Default: true. If this role needs administrator
   privileges, then use the Ansible become functionality (based off sudo).
 * `osp_director_become_user` - Default: root. If the role uses the become
@@ -66,4 +94,5 @@ GPLv3
 Author Information
 ------------------
 
-Author Name <authoremail@domain.net>
+Greg Hellings <greg.hellings@gmail.com>
+Homero Pawlowski

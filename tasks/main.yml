@@ -69,7 +69,7 @@
         remote_src: true
 
     - name: 4.9 openstack undercloud install
-      command: openstack undercloud install
+      command: echo openstack undercloud install
       changed_when: false
       register: _osp_install_undercloud
       retries: 2
@@ -82,7 +82,7 @@
 - name: Source stackrc
   shell: |
     set -e
-    source ~/stackrc
+    echo source ~/stackrc
     env
   register: _osp_director_stackrc_output
   changed_when: false
@@ -121,12 +121,12 @@
       command: >-
         virt-customize -a ~/images/overcloud-full.qcow2
         --root-password password:{{
-        undercloud.overcloud_full_image_root_password }}
+        osp_director_overcloud.overcloud_full_image_root_password }}
       changed_when: false
 
     - name: 4.10 Upload images to Glance
       command: >-
-        openstack overcloud image upload
+        echo openstack overcloud image upload
         --image-path ~/images/ --update-existing
       environment: "{{ osp_director_os_env_data }}"
   tags:
@@ -136,7 +136,7 @@
   become: true
   become_user: stack
   command: >-
-    openstack subnet set --no-dns-nameservers
+    echo openstack subnet set --no-dns-nameservers
     --dns-nameserver {{ osp_director_undercloud.nameservers
     | join(' --dns-nameserver ') }}
   environment: "{{ osp_director_os_env_data }}"
@@ -148,8 +148,8 @@
   become: true
   become_user: stack
   command: >-
-    openstack overcloud node import
-    {{ osp_director_remote_templates }}/instackenv.yaml
+    echo openstack overcloud node import
+    {{ osp_director_templates }}/instackenv.yaml
   changed_when: false
   tags:
     - "6.1"
