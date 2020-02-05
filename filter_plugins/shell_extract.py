@@ -1,3 +1,66 @@
+"""
+Exposes the filter "env_to_dict([only=REGEX_LIST])
+
+This is a plugin that can take the stdout result of running the Bash built-in
+`env` command and return a dictionary. This can be used for passing into the
+`environment` key in later tasks. This can avoid needing to use the `shell`
+module to read an RC file prior to running a command.
+
+Ansible best practices is that you avoid using the "shell" command whenever
+possible. This is to avoid problems with pipes, exit codes, etc. It also limits
+the possibility of problems related to isolating change conditions when a shell
+script is run from within an Ansible command.
+
+`REGEX_LIST` is a list of strings, each of which is a regular expression. If
+provided, then only environment variable names which match ANY member of the
+list will be returned. This can allow you to avoid passing around unnecessary
+or incorrect data. So, if you only want OS_ and NOVA_ prefixed values then
+invoke this command like `{{ _my_output | env_to_dict(['OS_.*', 'NOVA_.*']) }}`
+
+For instance, this can replace something like
+
+```yaml
+- name: do a thing
+  shell: |
+    set -e
+    source ~/stackrc
+    openstack image save --file ~/foo.img foo creates=~/foo.img
+
+- name: do another thing
+  shell: |
+    set -e
+    source ~/stackrc
+    openstack image save --file ~/bar.img bar creates=~/bar.img
+
+- name keep doing other things...
+```
+
+with the following
+
+```yaml
+- name: create openstack image
+  shell: |
+    set -e
+    source ~/stackrc
+    env
+  register: _stackrc_output
+  changed_when: false
+
+- name: extract environment
+  set_fact:
+    _stackrc: "{{ _stackrc_output.stdout_lines | env_to_dict }}"
+
+- name: do a thing
+  command: openstack image save --file ~/foo.img foo creates=~/foo.img
+  environment: "{{ _stackrc }}"
+
+- name: do another thing
+  command: openstack image save --file ~/bar.img bar creates=~/bar.img
+  environment: "{{ _stackrc }}"
+
+- name: keep doing other things...
+```
+"""
 import re
 from ansible.module_utils.six import string_types
 

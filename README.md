@@ -3,7 +3,7 @@
 osp_director
 ===========
 
-Installs OSP Director and runs installs. This role mimics the steps in the
+Installs OSP Director and runs install of undercloud. This role mimics the steps in the
 [OSP 13](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/13/html-single/director_installation_and_usage/)
 install document from Red Hat. This particular role covers chapters 4 and 6 in
 the above document. Some steps are omitted because they are covered
