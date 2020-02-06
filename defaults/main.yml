@@ -16,4 +16,4 @@ osp_director_overcloud:
   ceph: "no"
   overcloud_full_image_root_password: secret123
 
-#osp_director_templates
+osp_director_templates: null

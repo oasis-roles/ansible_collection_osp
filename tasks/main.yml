@@ -1,4 +1,11 @@
-# Tasks are insipred and named after the Red Hat OpenStack install directions
+# Tasks are insipred and named after the Red Hat OpenStack install directions. Those without
+# x.y at the front are housekeeping bits for Ansible that are not derived from the RHOSP
+# install docs
+- name: ensure required values are set
+  assert:
+    that:
+      - osp_director_templates is not none
+
 - name: 4.2 Creating directories for templates and images
   become: "{{ osp_director_become }}"
   become_user: "{{ osp_director_become_user }}"
@@ -32,7 +39,7 @@
       become: true
       become_user: stack
       blockinfile:
-        path: ~/.bashrc
+        path: ~/stackrc
         block: |-
           alias os="openstack"
           alias osp="openstack"
