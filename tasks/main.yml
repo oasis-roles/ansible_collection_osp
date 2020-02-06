@@ -1,6 +1,6 @@
-# Tasks are insipred and named after the Red Hat OpenStack install directions. Those without
-# x.y at the front are housekeeping bits for Ansible that are not derived from the RHOSP
-# install docs
+# Tasks are insipred and named after the Red Hat OpenStack install directions.
+# Those without x.y at the front are housekeeping bits for Ansible that are
+# not derived from the RHOSP install docs
 - name: ensure required values are set
   assert:
     that:
