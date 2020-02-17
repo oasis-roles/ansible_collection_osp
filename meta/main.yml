@@ -1,6 +1,8 @@
 galaxy_info:
-  author: Author Name
-  description: My Description
+  author: Greg Hellings
+  description: |-
+    Sets up basic userspace tools to help with manually tweaking and
+    debugging on a system
   company: Red Hat, Inc.
   license: GPLv3
   min_ansible_version: 2.8

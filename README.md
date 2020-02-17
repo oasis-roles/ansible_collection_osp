@@ -53,4 +53,4 @@ GPLv3
 Author Information
 ------------------
 
-Author Name <authoremail@domain.net>
+Greg Hellings <greg.hellings@gmail.com>
