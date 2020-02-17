@@ -1,0 +1,5 @@
+osp_cli_tools_become: true
+osp_cli_tools_become_user: root
+osp_cli_tools_user_dirs:
+  - user: "{{ ansible_user_id }}"
+    dir: "{{ ansible_user_dir }}"
