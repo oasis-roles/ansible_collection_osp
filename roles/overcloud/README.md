@@ -19,6 +19,17 @@ Currently the following variables are supported:
 
 ### General
 
+* `overcloud_environment_files` - Default: `[]`. A list of the environment
+  files within the templates directory to use in the deploy. The list of
+  options passed to the deploy command that use the '-e' flag.
+* `overcloud_templates` - Default: `~/templates`. Path to the templates
+  files to use in deployment.
+* `overcloud_network_data` - Default: `network_data.yml`. The option
+  passed to the '-n' flag.
+* `overcloud_role_data` - Default: `role-data.yml`. The option passed to the
+  '-r' flag.
+* `overcloud_extra_args` - Default: `''`. Any extra command-line shell
+  options
 * `overcloud_become` - Default: true. If this role needs administrator
   privileges, then use the Ansible become functionality (based off sudo).
 * `overcloud_become_user` - Default: root. If the role uses the become
@@ -47,4 +58,4 @@ GPLv3
 Author Information
 ------------------
 
-Author Name <authoremail@domain.net>
+Greg Hellings <greg.hellings@gmail.com>
