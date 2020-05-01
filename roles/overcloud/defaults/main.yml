@@ -1,0 +1,7 @@
+overcloud_environment_files: []
+overcloud_templates: ~/templates
+overcloud_network_data: network_data.yaml
+overcloud_roles_data: roles-data.yaml
+overcloud_extra_args: ''
+overcloud_become: true
+overcloud_become_user: root

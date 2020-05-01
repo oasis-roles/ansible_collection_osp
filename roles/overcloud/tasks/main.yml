@@ -1,0 +1,25 @@
+- name: construct environments arguments
+  set_fact:
+    _overcloud_environment_file_list: >-
+      {{ _overcloud_environment_file_list | default('') }}
+      -e {{ item }}
+  loop: "{{ overcloud_environment_files }}"
+
+- name: run command
+  become: true
+  become_user: stack
+  shell: |
+    set -ex
+    . ~/stackrc
+    openstack overcloud deploy \
+    --stack overcloud \
+    --disable-validations \
+    --templates {{ overcloud_templates }} \
+    -t 160 \
+    --validation-warnings-fatal \
+    --overcloud-ssh-user stack \
+    {{ _overcloud_environment_file_list }} \
+    -n {{ overcloud_network_data }} \
+    -r {{ overcloud_roles_data }} \
+    {{ overcloud_extra_args }} 2>&1 | \
+    tee logs/overcloud_install_$(date +%Y%m%d%H%M).log
