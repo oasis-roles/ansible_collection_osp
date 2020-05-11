@@ -12,7 +12,7 @@
     - role: oasis_roles.system.hostname
       hostname: director.example.com
     # Generate the templates, locally
-    - role: oasis_roles.osp_templates
+    - role: oasis_roles.osp.templates
       osp_templates_output_dir: /home/stack/osp_templates
       osp_templates_become: true
       osp_templates_become_user: stack

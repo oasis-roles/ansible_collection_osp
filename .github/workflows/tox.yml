@@ -17,7 +17,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        role: []
+        role:
+          - templates
     steps:
       - uses: actions/checkout@v2
         with:

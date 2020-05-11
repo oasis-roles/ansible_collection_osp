@@ -1,3 +1,0 @@
-skip_list:
-  - "204"  # disable LineTooLongRule
-  - "303"  # "git used in place of git module" - git module doesn't support creating repos

@@ -1,5 +1,3 @@
-roles:
-  - oasis_roles.osp_templates
 collections:
   - oasis_roles.system
   - devroles.system

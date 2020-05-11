@@ -40,7 +40,7 @@
   vars:
     base: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}"
   roles:
-    - role: osp_templates
+    - role: templates
       osp_templates_input_dir: "{{ base }}/in"
       osp_templates_output_dir: "/out"
       osp_templates_quick_mode: true

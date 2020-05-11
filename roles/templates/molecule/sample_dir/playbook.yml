@@ -129,5 +129,5 @@
             blah blah blah
             ===============================
   roles:
-    - role: osp_templates
+    - role: templates
       osp_templates_output_dir: "/out"
