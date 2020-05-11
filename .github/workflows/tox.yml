@@ -15,7 +15,7 @@ jobs:
   collect:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.collection.outputs.scenarios }}
+      scenarios: ${{ steps.collection.outputs.scenarios }}
     steps:
       - uses: actions/checkout@v2
         with:
