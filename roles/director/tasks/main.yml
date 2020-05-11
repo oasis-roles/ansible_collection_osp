@@ -40,6 +40,7 @@
       become_user: stack
       blockinfile:
         path: ~/stackrc
+        create: true
         block: |-
           alias os="openstack"
           alias osp="openstack"
