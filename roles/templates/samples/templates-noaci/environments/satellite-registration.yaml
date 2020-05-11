@@ -1,0 +1,9 @@
+resource_registry:
+  OS::TripleO::NodeExtraConfig: /usr/share/openstack-tripleo-heat-templates/extraconfig/pre_deploy/rhel-registration/rhel-registration.yaml
+parameter_defaults:
+  rhel_reg_activation_key: "{{ satellite.overcloud.ak }}"
+  rhel_reg_org: "{{ satellite.overcloud.org }}"
+  rhel_reg_method: "satellite"
+  rhel_reg_sat_url: "http://{{ satellite.overcloud.hostname }}"
+  rhel_reg_sat_repo: "{{ satellite.overcloud.tools_repo }}"
+  rhel_reg_force: "true"

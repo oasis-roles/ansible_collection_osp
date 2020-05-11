@@ -1,0 +1,16 @@
+nodes:
+{% for node in overcloud_nodes %}
+  - name: {{ node.name }}
+    arch: {{ node.arch | default('x86_64') }}
+    capabilities: profile:{{ node.role }},boot_option:local
+    {% if 'mac' in node %}
+    mac:
+      - {{ node.mac }}
+    {% endif %}
+    {% if 'pm' in node %}
+    pm_addr: {{ node.pm.addr }}
+    pm_type: {{ node.pm.type }}
+    pm_user: {{ node.pm.user }}
+    pm_password: {{ node.pm.password }}
+    {% endif %}
+{% endfor %}

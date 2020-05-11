@@ -1,0 +1,32 @@
+- block:
+    - name: make sure {{ osp_templates_output_dir }} exists
+      file:
+        path: "{{ osp_templates_output_dir }}"
+        state: directory
+        owner: "{{ osp_templates_owner | default(omit) }}"
+
+    - name: match {{ osp_templates_input_dir }} folder structure to output
+      file:
+        path: "{{ osp_templates_output_dir }}/{{ item.path }}"
+        state: directory
+        owner: "{{ osp_templates_owner | default(omit) }}"
+      with_filetree: "{{ osp_templates_input_dir }}"
+      when:
+        - item.state == 'directory'
+        - not osp_templates_copy_only
+
+    # Standard mode: template all files
+    - include_tasks: template_all.yml
+      when:
+        - not osp_templates_quick_mode
+        - not osp_templates_copy_only
+
+    - include_tasks: quick_mode.yml
+      when:
+        - osp_templates_quick_mode
+        - not osp_templates_copy_only
+
+    - include_tasks: copy_templates.yml
+      when: osp_templates_copy_only
+  become: "{{ osp_templates_become }}"
+  become_user: "{{ osp_templates_become_user }}"

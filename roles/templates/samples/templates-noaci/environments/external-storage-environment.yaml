@@ -1,0 +1,54 @@
+resource_registry:
+  OS::TripleO::Services::SwiftProxy: OS::Heat::None
+  OS::TripleO::Services::SwiftStorage: OS::Heat::None
+  OS::TripleO::Services::SwiftRingBuilder: OS::Heat::None
+
+parameter_defaults:
+  GlanceBackend: swift
+  GnocchiBackend: swift
+  NumberOfStorageSacks: 128
+  ControllerExtraConfig:
+    gnocchi::storage::swift::swift_authurl: '{{ overcloud.swift.authurl }}'
+    gnocchi::storage::swift::swift_user: 'gnocchi:gnocchi'
+    gnocchi::storage::swift::swift_auth_version: 2
+    gnocchi::storage::swift::swift_key: '{% raw %}{{ overcloud.swift.key }}{% endraw %}'
+
+    glance::backend::swift::swift_store_auth_address: '{{ overcloud.swift.authurl }}'
+    glance::backend::swift::swift_store_user: 'glance:glance'
+    glance::backend::swift::swift_store_key: '{% raw %}{{ overcloud.swift.key }}{% endraw %}'
+    glance::backend::swift::swift_store_auth_version: 2
+
+    keystone::using_domain_config: true
+    horizon::keystone_multidomain_support: true
+    horizon::keystone_default_domain: Default
+    cinder::api::default_volume_type: scaleio
+    cinder_user_enabled_backends: 'scaleio'
+    cinder::config::cinder_config:
+        scaleio/sio_protection_domain_name:
+            value: '{{ overcloud.scaleio.protection_domain_name }}'
+        scaleio/sio_storage_pool_name:
+            value: '{{ overcloud.scaleio.storage_pool }}'
+        scaleio/sio_storage_pools:
+            value: '{{ overcloud.scaleio.protection_domain_name }}:{{ overcloud.scaleio.storage_pool }}'
+        scaleio/sio_verify_server_certificate:
+            value: false
+        scaleio/volume_driver:
+            value: cinder.volume.drivers.dell_emc.scaleio.driver.ScaleIODriver
+        scaleio/san_ip:
+            value: '{{ overcloud.scaleio.san_ip }}'
+        scaleio/san_login:
+            value: Cinder
+        scaleio/san_password:
+            value: '{% raw %}{{ overcloud.scaleio.san_password }}{% endraw %}'
+        scaleio/volume_backend_name:
+            value: scaleio
+        scaleio/san_thin_provision:
+            value: true
+        scaleio/image_volume_cache_enabled:
+            value: true
+        scaleio/sio_unmap_volume_before_deletion:
+            value: true
+        DEFAULT/cinder_internal_tenant_project_id:
+            value: service
+        DEFAULT/cinder_internal_tenant_user_id:
+            value: cinder

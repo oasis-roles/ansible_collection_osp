@@ -1,0 +1,8 @@
+parameter_defaults:
+  CAMap:
+{% for cert in certs.CAMap %}
+    {{ cert.name }}:
+      content: |
+        {{ cert.content | indent(width = 8) | trim }}
+
+{% endfor %}

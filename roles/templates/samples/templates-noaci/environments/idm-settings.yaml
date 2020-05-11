@@ -1,0 +1,13 @@
+resource_registry:
+  OS::TripleO::NodeExtraConfigPost: ../heat/configure-idm-domain.yaml
+parameter_defaults:
+  IDMKeystoneDomain: '{{ IDM.domain }}'
+  IDMUserFilter: '{{ IDM.user_filter }}'
+  IDMGroupFilter: '{{ IDM.group_filter }}'
+  IDMBindDN: '{{ IDM.bind_dn }}'
+  IDMBindPassword: '{% raw %}{{ IDM.bind_passwd }}{% endraw %}'
+  IDMUserTree: '{{ IDM.user_tree }}'
+  IDMGroupTree: '{{ IDM.group_tree }}'
+  IDMServers: '{{ IDM.servers }}'
+  IDMCaCertificate: |
+    {{ IDM.ca_cert | indent(width = 4) | trim }}

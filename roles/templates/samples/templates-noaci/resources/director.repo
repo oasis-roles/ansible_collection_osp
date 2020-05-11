@@ -1,0 +1,5 @@
+[scaleio]
+name=scaleio
+baseurl=http://{{ satellite_host }}/pub/scaleio
+enabled=1
+gpgcheck=0

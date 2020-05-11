@@ -1,0 +1,27 @@
+# This is an example template on how to configure keystone domain specific LDAP
+# backends. This will configure a domain called tripleoldap will the attributes
+# specified.
+parameter_defaults:
+  KeystoneLDAPDomainEnable: true
+  KeystoneLDAPBackendConfigs:
+    {{ IDM.domain }}:
+      url: '{{ IDM.servers }}'
+      user: '{{ IDM.bind_dn }}'
+      password: '{% raw %}{{ IDM.bind_passwd }}{% endraw %}'
+      user_tree_dn: '{{ IDM.user_tree }}'
+      user_filter: '{{ IDM.user_filter }}'
+      group_tree_dn: '{{ IDM.group_tree }}'
+      group_filter: '{{ IDM.group_filter }}'
+      user_objectclass: person
+      user_id_attribute: cn
+      user_name_attribute: sAMAccountName
+      user_mail_attribute: mail
+      user_pass_attribute:
+      user_enabled_attribute: userAccountControl
+      user_enabled_mask: 2
+      user_enabled_default: 512
+      group_id_attribute: cn
+      group_name_attribute: name
+      group_objectclass: group
+      group_member_attribute: member
+      query_scope: sub

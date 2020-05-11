@@ -1,0 +1,19 @@
+heat_template_version: 2014-10-16
+
+description: >
+  Wraps all NodeExtraConfigPost Tasks
+
+parameters:
+  servers:
+    type: json
+
+resources:
+  scaleio_install:
+    type: install-scaleio.yaml
+    properties:
+      servers: { get_param: servers }
+
+  search_domain:
+    type: set-search-domain.yaml
+    properties:
+      servers: { get_param: servers }
