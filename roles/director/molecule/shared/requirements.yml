@@ -1,0 +1,9 @@
+roles:
+  - oasis_roles.rhsm
+  - oasis_roles.molecule_openstack_ci
+  - oasis_roles.molecule_docker_ci
+  - oasis_roles.osp_templates
+  - oasis_roles.users_and_groups
+  - oasis_roles.hostname
+collections:
+  - devroles.system

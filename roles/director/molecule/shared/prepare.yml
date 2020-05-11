@@ -1,0 +1,55 @@
+- name: register RHSM
+  hosts: all
+  roles:
+    - role: oasis_roles.rhsm
+      when: ansible_distribution == 'RedHat'
+    - role: oasis_roles.users_and_groups
+      users_and_groups_add_modify_users:
+        - name: stack
+    - role: devroles.system.sudoers
+      sudoers_no_password:
+        - stack
+    - role: oasis_roles.hostname
+      hostname: director.example.com
+    # Generate the templates, locally
+    - role: oasis_roles.osp_templates
+      osp_templates_output_dir: /home/stack/osp_templates
+      osp_templates_become: true
+      osp_templates_become_user: stack
+  vars:
+    rhsm_username: "{{ lookup('env', 'OASIS_RHSM_USERNAME') }}"
+    rhsm_password: "{{ lookup('env', 'OASIS_RHSM_PASSWORD') }}"
+    rhsm_server_hostname: "{{ lookup('env', 'OASIS_RHSM_SERVER_HOSTNAME') }}"
+    rhsm_pool_ids: "{{ lookup('env', 'OASIS_RHSM_POOL_IDS') }}"
+    rhsm_repositories:
+      enabled:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-optional-rpms
+        - rhel-ha-for-rhel-7-server-rpms
+        - rhel-7-server-openstack-13-rpms
+  post_tasks:
+    - name: write undercloud.conf
+      become: true
+      copy:
+        dest: /home/stack/osp_templates/undercloud.conf
+        content: |
+          [DEFAULT]
+          undercloud_hostname = director.example.com
+          local_ip = {{ ansible_default_ipv4.address }}/{{
+            overcloud.networks.Control.cidr }}
+          network_gateway = {{ overcloud.networks.Control.gateway_ip }}
+          undercloud_nameservers = {{ overcloud.dns_servers | join(",") }}
+          undercloud_ntp_servers = {{ overcloud.NtpServer }}
+          local_interface = {{ ansible_default_ipv4.interface }}
+          network_cidr = {{ overcloud.networks.Control.ip_subnet }}/{{
+            overcloud.networks.Control.cidr }}
+          masquerade_network = {{ overcloud.networks.Control.ip_subnet }}/{{
+            overcloud.networks.Control.cidr }}
+          dhcp_start = {{ overcloud.networks.Control.allocation_pools[0] }}
+          dhcp_end = {{ overcloud.networks.Control.allocation_pools[1] }}
+          # yamllint disable-line rule:line-length
+          inspection_iprange = {{ overcloud.networks.Control.allocation_pools[1]
+            | ipmath(1) }},{{ overcloud.networks.Control.allocation_pools[1] |
+            ipmath(10) }}
+        owner: stack
