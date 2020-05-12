@@ -1,0 +1,7 @@
+osp_cli_tools_packages:
+  - bash-completion
+  - git
+  - tmux
+  - tree
+  - vim
+  - wget

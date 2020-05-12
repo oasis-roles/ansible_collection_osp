@@ -1,0 +1,25 @@
+- block:
+    - name: install packages
+      package:
+        name: "{{ osp_cli_tools_packages }}"
+        state: present
+
+    - name: install aliases
+      blockinfile:
+        path: "{{ item.dir }}/.bashrc"
+        create: true
+        owner: "{{ item.user | default(omit) }}"
+        block: |-
+          alias tlst="tmux ls"
+          alias tmat="tmux attach -t"
+          alias tnew="tmux new -s"
+      loop: "{{ osp_cli_tools_user_dirs }}"
+
+    - name: upload tmux.conf
+      copy:
+        src: tmux.conf
+        dest: "{{ item.dir }}/.tmux.conf"
+        owner: "{{ item.user | default(omit) }}"
+      loop: "{{ osp_cli_tools_user_dirs }}"
+  become: "{{ osp_cli_tools_become }}"
+  become_user: "{{ osp_cli_tools_become_user }}"

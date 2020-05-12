@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Greg Hellings
+  description: |-
+    Sets up basic userspace tools to help with manually tweaking and
+    debugging on a system
+  company: Red Hat, Inc.
+  license: GPLv3
+  min_ansible_version: 2.8
+  platforms:
+    - name: EL
+      versions:
+        - 7
+
+  galaxy_tags:
+    - oasis
+
+dependencies: []
