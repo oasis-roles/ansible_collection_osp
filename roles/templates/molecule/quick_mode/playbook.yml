@@ -8,8 +8,8 @@
   tasks:
     - name: initialize git config
       shell: |-
-        git config -g user.email "nobody@nowhere.com"
-        git config -g user.name "Automated CI"
+        git config --global user.email "nobody@nowhere.com"
+        git config --global user.name "Automated CI"
 
     - name: create git repo
       command: git init "{{ base }}/in"
