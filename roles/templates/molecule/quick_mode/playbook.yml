@@ -7,9 +7,14 @@
     base: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}"
   tasks:
     - name: initialize git config
-      shell: |-
-        git config --global user.email "nobody@nowhere.com"
-        git config --global user.name "Automated CI"
+      git_config:
+        scope: global
+        state: present
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+      with_dict:
+        user.email: nobody@nowhere.com
+        user.name: Automated CI
 
     - name: create git repo
       command: git init "{{ base }}/in"
