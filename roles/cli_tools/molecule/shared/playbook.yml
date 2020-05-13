@@ -1,5 +1,4 @@
 - name: converge
   hosts: all
   roles:
-    - role: osp_cli_tools
-  post_tasks: []
+    - role: cli_tools
