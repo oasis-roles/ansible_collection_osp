@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.com/oasis-roles/osp_templates.svg?branch=master)](https://travis-ci.com/oasis-roles/osp_templates)
-
-osp_templates
+templates
 ===========
 
 Ansible role to template an entire directory structure efficiently. It can be operated
@@ -229,7 +227,7 @@ such as in group\_vars)
 ```yaml
 - hosts: localhost
   roles:
-    - role: oasis_roles.osp_templates
+    - role: oasis_roles.osp.templates
       osp_templates_output_dir: /some/output/string
 ```
 
@@ -238,7 +236,7 @@ are located within a git repository and run the following playbook:
 ```yaml
 - hosts: some_hosts
   roles:
-    - role: oasis_roles.osp_templates
+    - role: oasis_roles.osp.templates
       osp_templates_quick_mode: true
       osp_templates_input_dir: "{{ playbook_dir }}/my_site"
       osp_templates_output_dir: "{{ ansible_user_dir }}/public_html"
@@ -248,7 +246,7 @@ To generate templates locally, then synchronize them to a remote host, do:
 ```yaml
 - hosts: localhost
   roles:
-    - role: oasis_roles.osp_templates
+    - role: oasis_roles.osp.templates
       osp_templates_input_dir: "/home/user/website_templates"
       osp_templates_output_dir: "/home/user/website"
   post_tasks:
@@ -261,7 +259,7 @@ To generate templates locally, then synchronize them to a remote host, do:
 
 - hosts: webserver
   roles:
-    - role: oasis_roles.osp_templates
+    - role: oasis_roles.osp.templates
       osp_template_intput_dir: /home/user/website  # no trailing '/' means the file goes, too
       osp_template_output_dir: /var/www  # will result in /var/www/website on remote
       osp_template_copy_only: true

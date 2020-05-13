@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.com/oasis-roles/osp_director.svg?branch=master)](https://travis-ci.com/oasis-roles/osp_director)
-
-osp_director
+director
 ===========
 
 Installs OSP Director and runs install of undercloud. This role mimics the steps in the
@@ -17,7 +15,7 @@ in other roles within OASIS. For example
 [rhsm](https://github.com/oasis-roles/rhsm) role. Also, be sure to run an update
 on all the systems before running this role
 * 4.7 - Configuring the director. This step is just uploading the templates, which
-is the job of [osp\_templates](https://github.com/oasis-roles/osp_templates).
+is the job of [templates](https://github.com/oasis-roles/ansible_collection_osp/blob/master/roles/templates/).
 * A.7 Trust overcloud cert from the undercloud. Handling overcloud certificates
 is the work of [update\_ca\_trust](https://github.com/oasis-roles/update_ca_trust).
 
@@ -83,7 +81,7 @@ Example Playbook
 ```yaml
 - hosts: osp_director-servers
   roles:
-    - role: oasis_roles.osp_director
+    - role: oasis_roles.osp.director
 ```
 
 License

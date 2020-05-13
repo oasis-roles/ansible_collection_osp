@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.com/oasis-roles/osp_cli_tools.svg?branch=master)](https://travis-ci.com/oasis-roles/osp_cli_tools)
-
-osp\_cli\_tools
+cli\_tools
 ===========
 
 Installs and configures some basic userland tools to help with on-box debugging
@@ -42,7 +40,7 @@ Example Playbook
 ```yaml
 - hosts: osp_cli_tools-servers
   roles:
-    - role: oasis_roles.osp_cli_tools
+    - role: oasis_roles.osp.cli_tools
 ```
 
 License
