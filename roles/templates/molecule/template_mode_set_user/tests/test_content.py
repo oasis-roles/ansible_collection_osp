@@ -9,13 +9,14 @@
 
 
 def test_file_a(host):
-    """Test that the file is properly uploaded AND templated"""
-    content = host.file("/out/file.yml").content
-    assert content == b'key: "my string"\n'
+    """Verifies that a file with Jinja2 templates in it is properly uploaded
+    without rendering the templates when the mode is set to copy only"""
+    f = host.file("/out/file.yml")
+    assert f.user == "extra"
 
 
 def test_file_raw(host):
-    """Test that the file is properly uploaded, templated, and still includes
-    raw content."""
-    content = host.file("/out/raw.in").content
-    assert content == b'key: {{ value }}\n'
+    """Verifies that a Jinja2 template with raw content is properly uploaded
+    with the raw tags still in place, when copy mode is engaged."""
+    f = host.file("/out/raw.in")
+    assert f.user == "extra"

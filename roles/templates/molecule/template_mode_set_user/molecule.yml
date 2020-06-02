@@ -1,0 +1,10 @@
+driver:
+  name: docker
+platforms:
+  - name: osp_templates
+    image: centos:7
+provisioner:
+  inventory:
+    group_vars:
+      all:
+        osp_templates_owner: extra
