@@ -11,11 +11,11 @@
 def test_file_a(host):
     """Test that the file is properly uploaded AND templated"""
     content = host.file("/out/file.yml").content
-    assert content == b'key: "my string"\n'
+    assert content == b'key: "my string"'
 
 
 def test_file_raw(host):
     """Test that the file is properly uploaded, templated, and still includes
     raw content."""
     content = host.file("/out/raw.in").content
-    assert content == b'key: {{ value }}\n'
+    assert content == b'key: {{ value }}'
