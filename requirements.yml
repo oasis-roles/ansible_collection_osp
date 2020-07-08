@@ -1,3 +1,4 @@
 collections:
-  - oasis_roles.system
+  - name: oasis_roles.system
+    version: ">=1.1.0"
   - devroles.system
