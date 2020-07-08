@@ -3,6 +3,7 @@
   roles:
     - role: oasis_roles.system.rhsm
       when: ansible_distribution == 'RedHat'
+    - role: oasis_roles.system.users_and_groups
   post_tasks:
     - name: install necessary tools
       package:
@@ -11,16 +12,11 @@
           - rsync
         state: present
       become: true
-    - name: create a group
-      group:
-        name: extra
-        state: present
-    - name: create a user
-      user:
-        name: extra
-        state: present
-        group: extra
   vars:
+    users_and_groups_add_modify_users:
+      - name: stack
+    users_and_groups_add_modify_groups:
+      - name: stack
     rhsm_username: "{{ lookup('env', 'OASIS_RHSM_USERNAME') }}"
     rhsm_password: "{{ lookup('env', 'OASIS_RHSM_PASSWORD') }}"
     rhsm_server_hostname: "{{ lookup('env', 'OASIS_RHSM_SERVER_HOSTNAME') }}"
