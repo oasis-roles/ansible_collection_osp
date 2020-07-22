@@ -80,6 +80,8 @@
           alias osp="openstack"
 
 - name: Source stackrc
+  become: true
+  become_user: stack
   shell: |
     set -e
     source "{{ osp_director_stage }}/stackrc"
@@ -123,6 +125,7 @@
         --root-password password:{{
         osp_director_overcloud.overcloud_full_image_root_password }}
       changed_when: false
+      when: "'overcloud_full_image_root_password' in osp_director_overcloud"
 
     - name: Upload images to Glance
       command: >-
@@ -130,12 +133,20 @@
         --image-path {{ osp_director_stage }}/images/ --update-existing
       environment: "{{ osp_director_os_env_data }}"
 
+- name: Read subnet info
+  become: true
+  become_user: stack
+  shell: |
+    set -o pipefail
+    openstack subnet list | grep ctlplane-subnet | awk '{print $2}' | xargs
+  register: _osp_director_read_subnet_info
+
 - name: Setting a nameserver for the control plane
   become: true
   become_user: stack
   command: >-
     openstack subnet set --no-dns-nameservers
     --dns-nameserver {{ osp_director_undercloud.nameservers
-    | join(' --dns-nameserver ') }}
+    | join(' --dns-nameserver ') }} {{ _osp_director_read_subnet_info.stdout }}
   environment: "{{ osp_director_os_env_data }}"
   changed_when: false

@@ -56,7 +56,7 @@ osp_director_undercloud:
 osp_director_overcloud:
   domain: example.com
   ceph: "no"
-  overcloud_full_image_root_password: secret123
+  overcloud_full_image_root_password: secret123  # optional
 ```
 * `osp_director_stage` - Path where certain files can be downloaded, untarred, or
   stored during the run. Defaults to /home/stack, per the OSP documentation. The role
