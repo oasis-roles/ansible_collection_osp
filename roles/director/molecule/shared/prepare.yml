@@ -54,8 +54,8 @@
     # Gets rid of stale yum data that can cause installations to fail
     - name: Clean all
       become: true
-      shell: yum clean all
+      command: yum clean all
 
     - name: Repolist
       become: true
-      shell: yum repolist
+      command: yum repolist
