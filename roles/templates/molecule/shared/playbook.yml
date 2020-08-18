@@ -1,10 +1,10 @@
 - name: converge
-  gather_facts: false
+  gather_facts: true
   hosts: all
   vars:
     base: "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}/../shared/"
+    osp_templates_input_dir: "{{ base }}/in/"
+    osp_templates_output_dir: /out
+    value: "my string"
   roles:
     - role: templates
-      osp_templates_input_dir: "{{ base }}/in/"
-      osp_templates_output_dir: /out
-      value: "my string"

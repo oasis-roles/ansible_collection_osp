@@ -8,6 +8,12 @@
     archive: false
     recursive: true
   register: _sync_output
+  # Because rsync doesn't have a way to set the remote owners, we
+  # do this, isntead.
+  become: "{{ osp_templates_owner is defined }}"
+  become_user: >-
+    {{ (osp_templates_owner is defined) |
+    ternary(osp_templates_owner, '') }}
 
 - debug:
     var: _sync_output

@@ -2,4 +2,6 @@
   hosts: all
   roles:
     - role: director
-      osp_director_templates: /home/stack/osp_templates
+  vars:
+    osp_director_templates: /home/stack/osp_templates
+    osp_director_undercloud: "{{ undercloud }}"

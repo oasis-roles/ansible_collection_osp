@@ -6,20 +6,18 @@
     that:
       - osp_director_templates is not none
 
-- name: 4.2 Creating directories for templates and images
+- name: Creating directories for images
   become: "{{ osp_director_become }}"
   become_user: "{{ osp_director_become_user }}"
   file:
     path: "{{ item }}"
     state: directory
     mode: 0755
+    owner: stack
   with_items:
-    - ~/images
-    - ~/templates
-  tags:
-    - "4.2"
+    - "{{ osp_director_stage }}/images"
 
-- name: 4.5 Installing the director packages
+- name: Installing the director packages
   become: "{{ osp_director_become }}"
   become_user: "{{ osp_director_become_user }}"
   block:
@@ -35,62 +33,58 @@
       tags:
         - tempest
 
-    - name: Add useful aliases for OpenStack
-      become: true
-      become_user: stack
-      blockinfile:
-        path: ~/stackrc
-        create: true
-        block: |-
-          alias os="openstack"
-          alias osp="openstack"
-  tags:
-    - "4.5"
-
-- name: 4.6 Installing ceph-ansible
+- name: Installing ceph-ansible
   become: "{{ osp_director_become }}"
   become_user: "{{ osp_director_become_user }}"
   block:
     # This is required if using ceph-ansible. Do not use the package that comes
     # from @rhel-7-server-openstack-13-rpms
-    - name: 4.6 Enable the Ceph Tools repository
+    - name: Enable the Ceph Tools repository
       rhsm_repository:
         name:
-          - rhel-7-server-rhceph-3-tools-rpm
+          - rhel-7-server-rhceph-3-tools-rpms
         state: enabled
 
-    - name: 4.6 Install ceph-ansible
+    - name: Install ceph-ansible
       package:
         name: ceph-ansible
         state: present
   when: osp_director_undercloud.install_ceph_ansible
 
-- name: 4.9 Installing the director
+- name: Installing the director
   become: true
   become_user: stack
   block:
-    - name: 4.9 Copy undercloud.conf to /home/stack
+    - name: Copy undercloud.conf to {{ osp_director_stage }}
       copy:
         src: "{{ osp_director_templates }}/undercloud.conf"
-        dest: /home/stack/undercloud.conf
+        dest: "{{ osp_director_stage }}/undercloud.conf"
         mode: preserve
         remote_src: true
 
-    - name: 4.9 openstack undercloud install
+    - name: openstack undercloud install
       command: openstack undercloud install
       changed_when: false
       register: _osp_install_undercloud
-      retries: 2
       until: _osp_install_undercloud is success
-      async: 14400  # 4 hours
       poll: 300  # every 5 minutes
-  tags:
-    - "4.9"
+
+    - name: Add useful aliases for OpenStack
+      become: true
+      become_user: stack
+      blockinfile:
+        path: "{{ osp_director_stage }}/stackrc"
+        create: true
+        block: |-
+          alias os="openstack"
+          alias osp="openstack"
 
 - name: Source stackrc
+  become: true
+  become_user: stack
   shell: |
     set -e
-    source ~/stackrc
+    source "{{ osp_director_stage }}/stackrc"
     env
   register: _osp_director_stackrc_output
   changed_when: false
@@ -99,65 +93,60 @@
   set_fact:
     osp_director_os_env_data: >-
       {{ _osp_director_stackrc_output.stdout
-      | env_to_dict(only=osp_director_env_filters) }}
+      | oasis_roles.osp.env_to_dict(only=osp_director_env_filters) }}
 
-- name: 4.10 Obtaining images for overcloud nodes
+- name: Obtaining images for overcloud nodes
   become: true
   become_user: stack
   block:
-    - name: 4.10 Install rhosp-director-image packages
+    - name: Install rhosp-director-image packages
       become: "{{ osp_director_become }}"
       become_user: "{{ osp_director_become_user }}"
       package:
         name: "{{ osp_director_image_packages }}"
         state: present
 
-    - name: 4.10 Make ~/images directory
+    - name: Make {{ osp_director_stage }}/images directory
       file:
-        path: ~/images
+        path: "{{ osp_director_stage }}/images"
         state: directory
         mode: 0755
 
-    - name: 4.10 Untar image archives to ~/images
+    - name: Untar image archives to {{ osp_director_stage }}/images
       unarchive:
         src: "{{ item }}"
-        dest: ~/images
+        dest: "{{ osp_director_stage }}/images"
         remote_src: true
       loop: "{{ osp_director_image_archives }}"
 
-    - name: 4.10 Set root password for Overcloud image
+    - name: Set root password for Overcloud image
       command: >-
-        virt-customize -a ~/images/overcloud-full.qcow2
+        virt-customize -a {{ osp_director_stage }}/images/overcloud-full.qcow2
         --root-password password:{{
         osp_director_overcloud.overcloud_full_image_root_password }}
       changed_when: false
+      when: "'overcloud_full_image_root_password' in osp_director_overcloud"
 
-    - name: 4.10 Upload images to Glance
+    - name: Upload images to Glance
       command: >-
         openstack overcloud image upload
-        --image-path ~/images/ --update-existing
+        --image-path {{ osp_director_stage }}/images/ --update-existing
       environment: "{{ osp_director_os_env_data }}"
-  tags:
-    - "4.10"
 
-- name: 4.11 Setting a nameserver for the control plane
+- name: Read subnet info
+  become: true
+  become_user: stack
+  shell: |
+    set -o pipefail
+    openstack subnet list | grep ctlplane-subnet | awk '{print $2}' | xargs
+  register: _osp_director_read_subnet_info
+
+- name: Setting a nameserver for the control plane
   become: true
   become_user: stack
   command: >-
     openstack subnet set --no-dns-nameservers
     --dns-nameserver {{ osp_director_undercloud.nameservers
-    | join(' --dns-nameserver ') }}
+    | join(' --dns-nameserver ') }} {{ _osp_director_read_subnet_info.stdout }}
   environment: "{{ osp_director_os_env_data }}"
   changed_when: false
-  tags:
-    - "4.11"
-
-- name: 6.1 Registering Nodes for the Overcloud
-  become: true
-  become_user: stack
-  command: >-
-    openstack overcloud node import
-    {{ osp_director_templates }}/instackenv.yaml
-  changed_when: false
-  tags:
-    - "6.1"

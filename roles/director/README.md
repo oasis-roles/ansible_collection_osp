@@ -56,8 +56,13 @@ osp_director_undercloud:
 osp_director_overcloud:
   domain: example.com
   ceph: "no"
-  overcloud_full_image_root_password: secret123
+  overcloud_full_image_root_password: secret123  # optional
 ```
+* `osp_director_stage` - Path where certain files can be downloaded, untarred, or
+  stored during the run. Defaults to /home/stack, per the OSP documentation. The role
+  will create the directory "images", the environment file "stackrc", and undercloud.conf
+  in this directory. Possibly others, as needed. This path needs to be writable both as
+  the `osp_director_become_user` user and the "stack" user.
 * `osp_director_templates` - Path to the templates that are needed to run
   Director. These are highly dependent on your environment and desired config
   for OpenStack. See the [osp\_templates](https://github.com/oasis-roles/osp_templates)

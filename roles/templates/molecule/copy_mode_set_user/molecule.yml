@@ -1,10 +1,11 @@
 driver:
   name: docker
 platforms:
-  - name: osp_templates
+  - name: osp_templates_copy_set_user
     image: centos:7
 provisioner:
   inventory:
     group_vars:
       all:
+        osp_templates_copy_only: true
         osp_templates_owner: stack

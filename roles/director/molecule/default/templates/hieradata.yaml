@@ -1,0 +1,2 @@
+heat_clients_endpoint_type: public
+heat::engine::default_deployment_signal_transport: TEMP_URL_SIGNAL

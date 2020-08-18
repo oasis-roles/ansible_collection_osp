@@ -1,6 +1,7 @@
 osp_director_become: true
 osp_director_become_user: root
 
+osp_director_stage: /home/stack
 osp_director_named_env: example-dev
 osp_director_undercloud:
   stack_user_password: password
