@@ -139,6 +139,7 @@
   shell: |
     set -o pipefail
     openstack subnet list | grep ctlplane-subnet | awk '{print $2}' | xargs
+  environment: "{{ osp_director_os_env_data }}"
   register: _osp_director_read_subnet_info
 
 - name: Setting a nameserver for the control plane
