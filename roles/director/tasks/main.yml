@@ -41,8 +41,7 @@
     # from @rhel-7-server-openstack-13-rpms
     - name: Enable the Ceph Tools repository
       rhsm_repository:
-        name:
-          - rhel-7-server-rhceph-3-tools-rpms
+        name: "{{ osp_ceph_repos }}"
         state: enabled
 
     - name: Install ceph-ansible
