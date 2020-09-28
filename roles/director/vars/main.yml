@@ -29,3 +29,6 @@ osp_director_env_filters:
   - PYTHONWARNINGS
   - COMPUT_.*
   - WEBSOCKET_CLIENT_CA_BUNDLE
+
+osp_ceph_repos:
+  - rhel-7-server-rhceph-3-tools-rpms
