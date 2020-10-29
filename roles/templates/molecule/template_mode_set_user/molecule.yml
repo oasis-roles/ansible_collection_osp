@@ -1,7 +1,7 @@
 driver:
   name: docker
 platforms:
-  - name: osp_templates
+  - name: osp_templates_template_mode_set_user
     image: centos:7
 provisioner:
   inventory:
