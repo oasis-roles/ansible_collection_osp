@@ -33,13 +33,13 @@ jobs:
         run: |
           set -ex
           python -m pip install --upgrade pip
-          pip install tox tox-ansible
+          pip install tox
       - name: collect depenencies
         id: collection
         run: |
           set -ex
           json="["
-          for x in $(tox -l --ansible-driver docker); do
+          for x in $(tox -q -l --ansible-driver docker); do
             json="${json}\"${x}\","
           done
           json="${json%,}]"
