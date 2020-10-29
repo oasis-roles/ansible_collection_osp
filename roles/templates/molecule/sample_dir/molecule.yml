@@ -1,7 +1,7 @@
 driver:
   name: docker
 platforms:
-  - name: osp_templates
+  - name: osp_templates_sample_dir
     image: centos:7
 provisioner:
   playbooks:

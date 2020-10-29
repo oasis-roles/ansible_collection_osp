@@ -1,5 +1,5 @@
 driver:
   name: docker
 platforms:
-  - name: osp_templates
+  - name: osp_templates_template_mode
     image: centos:7

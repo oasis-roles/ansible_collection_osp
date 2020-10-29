@@ -4,12 +4,14 @@
         path: "{{ osp_templates_output_dir }}"
         state: directory
         owner: "{{ osp_templates_owner | default(omit) }}"
+        mode: 0755
 
     - name: match {{ osp_templates_input_dir }} folder structure to output
       file:
         path: "{{ osp_templates_output_dir }}/{{ item.path }}"
         state: directory
         owner: "{{ osp_templates_owner | default(omit) }}"
+        mode: 0755
       with_filetree: "{{ osp_templates_input_dir }}"
       when:
         - item.state == 'directory'
