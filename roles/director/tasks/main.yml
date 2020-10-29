@@ -74,6 +74,7 @@
       blockinfile:
         path: "{{ osp_director_stage }}/stackrc"
         create: true
+        mode: preserve
         block: |-
           alias os="openstack"
           alias osp="openstack"
@@ -116,6 +117,7 @@
         src: "{{ item }}"
         dest: "{{ osp_director_stage }}/images"
         remote_src: true
+        mode: preserve
       loop: "{{ osp_director_image_archives }}"
 
     - name: Set root password for Overcloud image
@@ -140,6 +142,7 @@
     openstack subnet list | grep ctlplane-subnet | awk '{print $2}' | xargs
   environment: "{{ osp_director_os_env_data }}"
   register: _osp_director_read_subnet_info
+  changed_when: false
 
 - name: Setting a nameserver for the control plane
   become: true

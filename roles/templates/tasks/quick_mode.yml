@@ -19,5 +19,6 @@
     variable_start_string: "{{ osp_templates_variable_start_string }}"
     variable_end_string: "{{ osp_templates_variable_end_string }}"
     owner: "{{ osp_templates_owner | default(omit) }}"
+    mode: 0644
   loop: "{{ _shell_output.stdout_lines }}"
   register: _template_output

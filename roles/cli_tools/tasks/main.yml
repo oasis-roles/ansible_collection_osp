@@ -9,6 +9,7 @@
         path: "{{ item.dir }}/.bashrc"
         create: true
         owner: "{{ item.user | default(omit) }}"
+        mode: preserve
         block: |-
           alias tlst="tmux ls"
           alias tmat="tmux attach -t"
@@ -20,6 +21,7 @@
         src: tmux.conf
         dest: "{{ item.dir }}/.tmux.conf"
         owner: "{{ item.user | default(omit) }}"
+        mode: 0644
       loop: "{{ osp_cli_tools_user_dirs }}"
   become: "{{ osp_cli_tools_become }}"
   become_user: "{{ osp_cli_tools_become_user }}"
