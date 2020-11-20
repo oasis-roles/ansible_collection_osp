@@ -74,7 +74,7 @@
       blockinfile:
         path: "{{ osp_director_stage }}/stackrc"
         create: true
-        mode: preserve
+        mode: 0755
         block: |-
           alias os="openstack"
           alias osp="openstack"
