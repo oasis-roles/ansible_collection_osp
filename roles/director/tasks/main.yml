@@ -117,7 +117,7 @@
         src: "{{ item }}"
         dest: "{{ osp_director_stage }}/images"
         remote_src: true
-        mode: preserve
+        mode: 0755
       loop: "{{ osp_director_image_archives }}"
 
     - name: Set root password for Overcloud image
