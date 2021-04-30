@@ -18,3 +18,5 @@ osp_director_overcloud:
   overcloud_full_image_root_password: secret123
 
 osp_director_templates: null
+
+osp_director_version: ~

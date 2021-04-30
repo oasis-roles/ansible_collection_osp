@@ -1,0 +1,13 @@
+osp_director_base_packages:
+  - python3-tripleoclient
+
+osp_ceph_repos:
+  - rhceph-4-tools-for-rhel-8-x86_64-rpms
+
+osp_director_tempest_packages:
+  - openstack-tempest
+  - python3-keystone-tests-tempest
+  - python3-horizon-tests-tempest
+  - python3-neutron-tests-tempest
+  - python3-cinder-tests-tempest
+  - python3-telemetry-tests-tempest
