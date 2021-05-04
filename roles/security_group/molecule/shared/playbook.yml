@@ -1,0 +1,11 @@
+- name: converge
+  hosts: all
+  roles:
+    - role: security_group
+  vars:
+    osp_security_group_cloud: oasis
+    osp_security_group_name: ansible_collection_osp-security-group_ci
+    osp_security_group_description: ansible_collection_osp-security-group_ci
+    osp_security_group_rules:
+      - ethertype: IPv4
+      - ethertype: IPv6

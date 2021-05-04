@@ -1,0 +1,29 @@
+- name: Verify required variables are set
+  assert:
+    that: "{{ vars[item] is defined }}"
+    fail_msg: "Variable: '{{ item }}' is required."
+  loop:
+    - osp_security_group_name
+    - osp_security_group_rules
+
+- name: Delegate OpenStack security group tasks to localhost
+  block:
+    - name: Create security group
+      os_security_group:
+        cloud: "{{ osp_security_group_cloud }}"
+        name: "{{ osp_security_group_name }}"
+        description: "{{ osp_security_group_description | default(omit) }}"
+      register: security_group
+
+    - name: Create security group rules
+      os_security_group_rule:
+        cloud: "{{ osp_security_group_cloud }}"
+        security_group: "{{ osp_security_group_name }}"
+        protocol: "{{ item.proto | default(omit) }}"
+        port_range_min: "{{ item.port | default(omit) }}"
+        port_range_max: "{{ item.port | default(omit) }}"
+        remote_ip_prefix: "{{ item.cidr | default(omit) }}"
+        remote_group: "{{ item.group | default(omit) }}"
+        ethertype: "{{ item.ethertype | default(omit) }}"
+      with_items: "{{ osp_security_group_rules }}"
+  delegate_to: localhost
