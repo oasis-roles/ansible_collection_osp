@@ -1,0 +1,18 @@
+osp_director_packages:
+  - python-tripleoclient
+  - crudini
+  - libguestfs-tools
+  - libguestfs-xfs
+
+osp_director_tempest_packages:
+  - openstack-tempest
+  - python2-cinder-tests-tempest
+  - python2-heat-tests-tempest
+  - python2-keystone-tests-tempest
+  - python2-networking-l2gw-tests-tempest
+  - python2-neutron-tests-tempest
+  - python2-novajoin-tests-tempest
+  - python2-octavia-tests-tempest
+
+osp_ceph_repos:
+  - rhel-7-server-rhceph-3-tools-rpms

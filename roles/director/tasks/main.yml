@@ -1,11 +1,20 @@
-# Tasks are insipred and named after the Red Hat OpenStack install directions.
-# Those without x.y at the front are housekeeping bits for Ansible that are
-# not derived from the RHOSP install docs
 - name: ensure required values are set
   assert:
     that:
       - osp_director_templates is not none
+      - osp_director_version is not none
 
+- name: Set platform/version specific variables
+  include_vars: "{{ __rolename_vars_file }}"
+  loop:
+    - "rhosp_{{ osp_director_version }}.yml"
+  vars:
+    __rolename_vars_file: "{{ role_path }}/vars/{{ item }}"
+  when: __rolename_vars_file is file
+
+# Tasks are insipred and named after the Red Hat OpenStack install directions.
+# Those without x.y at the front are housekeeping bits for Ansible that are
+# not derived from the RHOSP install docs
 - name: Creating directories for images
   become: "{{ osp_director_become }}"
   become_user: "{{ osp_director_become_user }}"
