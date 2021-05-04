@@ -1,0 +1,4 @@
+volume_attach_volumes: []
+volume_attach_server: "{{ inventory_hostname }}"
+volume_attach_os_client_config: "{{ lookup('env', 'HOME') }}/.config/openstack/clouds.yaml"
+volume_attach_os_cloud: "{{ lookup('env', 'OS_CLOUD') }}"
