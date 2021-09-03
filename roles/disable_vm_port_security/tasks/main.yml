@@ -1,0 +1,68 @@
+# role tasks
+- name: Set platform/version specific variables
+  include_vars: "{{ __rolename_vars_file }}"
+  loop:
+    - "{{ ansible_facts.os_family }}.yml"
+    - "{{ ansible_facts.distribution }}.yml"
+    - "{{ ansible_facts.distribution }}_{{ ansible_facts.distribution_major_version }}.yml"
+    - "{{ ansible_facts.distribution }}_{{ ansible_facts.distribution_version }}.yml"
+  vars:
+    __rolename_vars_file: "{{ role_path }}/vars/{{ item }}"
+  when: __rolename_vars_file is file
+
+- name: Get all servers (VMs)
+  openstack.cloud.server_info:
+    cloud: "{{ disable_vm_port_security_os_cloud | default(omit, true) }}"
+    server: "{{ disable_vm_port_security_server_name }}*"
+  register: vm_list
+  environment:
+    OS_CLIENT_CONFIG_FILE: "{{ disable_vm_port_security_os_client_config }}"
+
+- name: Assert that vm_list is not empty
+  assert:
+    that:
+      - vm_list.openstack_servers | length
+    fail_msg: "Fail to get list of VMs"
+    success_msg: "Successfully retrieved the list of VMs"
+
+- name: Print list of servers(VMs)
+  debug:
+    var: vm_list
+
+- name: Get all server(VM) ports
+  openstack.cloud.port_info:
+    cloud: "{{ disable_vm_port_security_os_cloud | default(omit, true) }}"
+    filters:
+      device_id: "{{ item.id }}"
+  loop: "{{ vm_list.openstack_servers }}"
+  register: port_list
+  environment:
+    OS_CLIENT_CONFIG_FILE: "{{ disable_vm_port_security_os_client_config }}"
+
+- name: Flatten port list
+  set_fact:
+    ports: "{{ port_list.results | sum(attribute='openstack_ports', start=[]) | list }}"
+
+- name: Print list of VMs port
+  debug:
+    var: ports
+
+- name: Assert that port_list is not empty
+  assert:
+    that:
+      - ports | length
+    fail_msg: "Fail to get list of ports on VMs"
+    success_msg: "Successfully retrieved the list of ports"
+
+- name: Disable port security and security group
+  openstack.cloud.port:
+    cloud: "{{ disable_vm_port_security_os_cloud | default(omit, true) }}"
+    name: "{{ item.name }}"
+    network: "{{ item.network_id }}"
+    device_id: "{{ item.device_id }}"
+    port_security_enabled: false
+    no_security_groups: true
+  loop: "{{ ports }}"
+  when: "'ID' not in item.name and item.name != ''"
+  environment:
+    OS_CLIENT_CONFIG_FILE: "{{ disable_vm_port_security_os_client_config }}"

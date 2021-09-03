@@ -1,0 +1,6 @@
+disable_vm_port_security_server_name: ""
+disable_vm_port_os_client_config: "{{ lookup('env', 'HOME') }}/.config/openstack/clouds.yaml"
+disable_vm_port_os_cloud: "{{ lookup('env', 'OS_CLOUD') }}"
+
+disable_vm_port_security_become: true
+disable_vm_port_security_become_user: root

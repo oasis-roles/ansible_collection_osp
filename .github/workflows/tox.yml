@@ -7,7 +7,6 @@ on:
     - cron: '12 0 * * *'
 
 env:
-  TOX_ANSIBLE_DRIVER: docker
   ANSIBLE_COLLECTIONS_PATHS: ~/.ansible/:~/work/
   checkout_path: ansible_collections/oasis_roles/osp
 
@@ -34,16 +33,14 @@ jobs:
           set -ex
           python -m pip install --upgrade pip
           pip install tox
+      - name: lint
+        run: |
+          tox -e lint_all
       - name: collect depenencies
         id: collection
-        run: |
-          set -ex
-          json="["
-          for x in $(tox -q -l --ansible-driver docker); do
-            json="${json}\"${x}\","
-          done
-          json="${json%,}]"
-          echo "::set-output name=scenarios::${json}"
+        use: greg-hellings/tox-list@v1
+        with:
+          tox-args: --ansible-driver docker --ansible-driver podman
 
   build:
     needs: collect
