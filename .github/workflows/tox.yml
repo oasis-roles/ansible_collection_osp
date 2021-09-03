@@ -38,7 +38,7 @@ jobs:
           tox -e lint_all
       - name: collect depenencies
         id: collection
-        use: greg-hellings/tox-list@v1
+        uses: greg-hellings/tox-list@v1
         with:
           tox-args: --ansible-driver docker --ansible-driver podman
 
