@@ -14,7 +14,7 @@ jobs:
   collect:
     runs-on: ubuntu-latest
     outputs:
-      scenarios: ${{ steps.collection.outputs.scenarios }}
+      scenarios: ${{ steps.collection.outputs.tox-envs }}
     steps:
       - uses: actions/checkout@v2
         with:

@@ -8,8 +8,9 @@
 - name: run command
   become: true
   become_user: stack
+  changed_when: false
   shell: |
-    set -ex
+    set -ex -o pipefail
     . ~/stackrc
     openstack overcloud deploy \
     --stack overcloud \

@@ -63,6 +63,6 @@
     port_security_enabled: false
     no_security_groups: true
   loop: "{{ ports }}"
-  when: "'ID' not in item.name and item.name != ''"
+  when: "'ID' not in item.name and not (item.name | bool)"
   environment:
     OS_CLIENT_CONFIG_FILE: "{{ disable_vm_port_security_os_client_config }}"

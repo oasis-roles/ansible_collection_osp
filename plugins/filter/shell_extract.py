@@ -103,7 +103,7 @@ def split_lines(lines):
         line_list = lines.split("\n")
     else:
         line_list = lines
-    return [l.split("=", 1) for l in line_list if _is_var(l)]
+    return [line.split("=", 1) for line in line_list if _is_var(line)]
 
 
 def is_wanted(item, only):
