@@ -52,13 +52,13 @@ jobs:
   lint:
     uses: oasis-roles/meta_test/.github/workflows/lint.yml@master
     with:
-      checkout_path: ansible_collections/oasis_roles/osp
+      checkout_path: oasis_roles/osp
 
   build:
     needs: collect
     uses: oasis-roles/meta_test/.github/workflows/container_build.yml@master
     with:
-      checkout_path: ansible_collections/oasis_roles/osp
+      checkout_path: oasis_roles/osp
       scenarios: "${{ needs.collect.outputs.scenarios }}"
 
   release:
