@@ -1,5 +1,5 @@
 galaxy_info:
-  author: Greg Hellings
+  author: oasis_roles
   description: |-
     Sets up basic userspace tools to help with manually tweaking and
     debugging on a system
