@@ -1,5 +1,5 @@
 galaxy_info:
-  author: Greg Hellings
+  author: oasis_roles
   description: |
     A companion to the director role, this role will deploy the overcloud
   company: Red Hat, Inc.
