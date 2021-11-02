@@ -17,9 +17,6 @@ name: Test with Ansible
       - published
       - prereleased
 
-env:
-  ANSIBLE_COLLECTIONS_PATHS: ~/.ansible/:~/work/
-
 jobs:
   collect:
     runs-on: ubuntu-latest
@@ -51,14 +48,11 @@ jobs:
 
   lint:
     uses: oasis-roles/meta_test/.github/workflows/lint.yml@master
-    with:
-      checkout_path: oasis_roles/osp
 
   build:
     needs: collect
     uses: oasis-roles/meta_test/.github/workflows/container_build.yml@master
     with:
-      checkout_path: oasis_roles/osp
       scenarios: "${{ needs.collect.outputs.scenarios }}"
 
   release:
