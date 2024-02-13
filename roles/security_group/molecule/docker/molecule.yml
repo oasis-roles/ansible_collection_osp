@@ -1,0 +1,5 @@
+driver:
+  name: docker
+platforms:
+  - name: osp_security_group
+    image: centos:7

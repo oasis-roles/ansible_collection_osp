@@ -1,0 +1,2 @@
+osp_security_group_cloud: >-
+  {{ lookup('env', 'OS_CLOUD') | default('default', true) }}
